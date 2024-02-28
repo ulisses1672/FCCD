@@ -9,29 +9,40 @@ if __name__ == "__main__":
 
     length_of_subjects = len(subjects)
 
-    hours_per_subject = dict(zip(subjects, [2 for i in range(length_of_subjects)]))
+    quantity_per_subject = dict(zip(subjects, [2 for i in range(5)]))
 
-    for i in np.random.choice(subjects, length_of_subjects):
-        hours_per_subject[i]+=1
+    for i in np.random.choice(subjects, 5):
+        quantity_per_subject[i]+=1
 
     max_hours_per_day = 4
 
-    turma = ["Class1","Class2","Class3"]
+    turmas = ["Class1","Class2","Class3"]
 
-    TamanhoTurmas = dict(zip(turma, [20 for i in range(20)]))
+    TamanhoTurmas = dict(zip(turmas, [20 for i in range(20)]))
 
-    for i in np.random.choice(turma, 3):
+    for i in np.random.choice(turmas, 3):
         TamanhoTurmas[i]+=1
 
+    # Initialize an empty dictionary to store subjects for each class
+    turmasComSubjects = {}
+
+    for turma in turmas:
+        # Randomly select 1 to 3 subjects for each turma
+        num_subjects = np.random.randint(1, 4)
+        selected_subjects = np.random.choice(subjects, num_subjects, replace=False).tolist()
+        
+        # Store the selected subjects for the current turma
+        turmasComSubjects[turma] = selected_subjects
+
     preferences = [
-        ('Quarta', f"h_{14}", 'Frances', 4)
+        # ('Quarta', f"h_{14}", 'Frances', 4)
     ]
 
     constraints = [
-        ('Segunda', f"h_{10}", 'Matematica',  1)
+       #  ('Segunda', f"h_{10}", 'Matematica',  1)
     ]
 
-    SCHEDULE = course_scheduler(days, hours, hours_per_subject, max_hours_per_day)
+    SCHEDULE = course_scheduler(days, hours, quantity_per_subject, max_hours_per_day,turma)
     SCHEDULE.create_model()
     SCHEDULE.update_preferences(preferences)
     SCHEDULE.update_constraints(constraints)

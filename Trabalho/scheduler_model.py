@@ -4,9 +4,10 @@ import pyomo.kernel as pmo
 import pandas as pd
 
 class course_scheduler:
-    def __init__(self, days, hours, hours_per_subject, max_hours_per_day):
+    def __init__(self, days, hours, hours_per_subject, max_hours_per_day , turmas):
         self.days = days
         self.hours = hours
+        self.turmas = turmas
         self.subjects = list(hours_per_subject.keys())
         self.hours_per_subject = hours_per_subject
         self.max_hours_per_day = max_hours_per_day
@@ -21,6 +22,7 @@ class course_scheduler:
         model.sDays = pyo.Set(initialize = self.days, ordered = True)
         model.sHours = pyo.Set(initialize = self.hours, ordered = True)
         model.sSubjects = pyo.Set(initialize = self.subjects)
+        model.sTurmas = pyo.Set(initialize=self.turmas)
 
         # Parameters
         model.pHoursPerSubject = pyo.Param(model.sSubjects, initialize = self.hours_per_subject)
@@ -110,9 +112,7 @@ class course_scheduler:
         
         penalty = -5
     
-    
-        
-        
+
         # Objective function
         maximize = 1
         model.objSchedule= pyo.Objective(sense = -maximize, expr =  penalty*(model.vIsubjectTotalDays)+ sum(model.pPreferences[i,j,k]*model.vbSubjectSchedule[i,j,k] for i in model.sDays for j in model.sHours for k in model.sSubjects))
