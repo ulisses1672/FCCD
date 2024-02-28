@@ -14,7 +14,7 @@ if __name__ == "__main__":
     for i in np.random.choice(subjects, 5):
         quantity_per_subject[i]+=1
 
-    max_hours_per_day = 4
+    max_quantity_subjects_per_day = 2
 
     turmas = ["Class1","Class2","Class3"]
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
        #  ('Segunda', f"h_{10}", 'Matematica',  1)
     ]
 
-    SCHEDULE = course_scheduler(days, hours, quantity_per_subject, max_hours_per_day,turma)
+    SCHEDULE = course_scheduler(days, hours, quantity_per_subject, max_quantity_subjects_per_day,turma)
     SCHEDULE.create_model()
     SCHEDULE.update_preferences(preferences)
     SCHEDULE.update_constraints(constraints)

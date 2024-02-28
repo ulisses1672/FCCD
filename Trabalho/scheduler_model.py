@@ -4,13 +4,13 @@ import pyomo.kernel as pmo
 import pandas as pd
 
 class course_scheduler:
-    def __init__(self, days, hours, hours_per_subject, max_hours_per_day , turmas):
+    def __init__(self, days, hours, quantity_per_subject, max_quantity_subjects_per_day , turmas):
         self.days = days
         self.hours = hours
         self.turmas = turmas
-        self.subjects = list(hours_per_subject.keys())
-        self.hours_per_subject = hours_per_subject
-        self.max_hours_per_day = max_hours_per_day
+        self.subjects = list(quantity_per_subject.keys())
+        self.quantity_per_subject = quantity_per_subject
+        self.max_quantity_subjects_per_day = max_quantity_subjects_per_day
         self.model = None
         self.schedule = None
         
@@ -25,9 +25,9 @@ class course_scheduler:
         model.sTurmas = pyo.Set(initialize=self.turmas)
 
         # Parameters
-        model.pHoursPerSubject = pyo.Param(model.sSubjects, initialize = self.hours_per_subject)
-        model.pMinDaysPerSubject = pyo.Param(model.sSubjects, initialize = dict(zip(self.hours_per_subject.keys(), [round(i/self.max_hours_per_day) for i in list(self.hours_per_subject.values())])))
-        model.pMaxDaysPerSubject = pyo.Param(model.sSubjects, initialize = self.hours_per_subject)
+        model.pHoursPerSubject = pyo.Param(model.sSubjects, initialize = self.quantity_per_subject)
+        model.pMinDaysPerSubject = pyo.Param(model.sSubjects, initialize = dict(zip(self.quantity_per_subject.keys(), [round(i/self.max_quantity_subjects_per_day) for i in list(self.quantity_per_subject.values())])))
+        model.pMaxDaysPerSubject = pyo.Param(model.sSubjects, initialize = self.quantity_per_subject)
 
         model.pPreferences = pyo.Param(model.sDays, model.sHours, model.sSubjects, initialize = 1.0, mutable = True)
 
@@ -59,7 +59,7 @@ class course_scheduler:
         model.ctMaxDailyHours = pyo.ConstraintList()
         for k in model.sSubjects:
             for i in model.sDays:
-                model.ctMaxDailyHours.add(sum(model.vbSubjectSchedule[i,j,k] for j in model.sHours)<=self.max_hours_per_day)
+                model.ctMaxDailyHours.add(sum(model.vbSubjectSchedule[i,j,k] for j in model.sHours)<=self.max_quantity_subjects_per_day)
 
 
         #-------- daily constraints
@@ -67,7 +67,7 @@ class course_scheduler:
         model.ctSubjectDaysFlags = pyo.ConstraintList()
         for k in model.sSubjects:
             for i in model.sDays:
-                model.ctSubjectDaysFlags.add(self.max_hours_per_day*model.vbSubjectDaysFlags[i,k]>=sum(model.vbSubjectSchedule[i,j,k] for j in model.sHours))
+                model.ctSubjectDaysFlags.add(self.max_quantity_subjects_per_day*model.vbSubjectDaysFlags[i,k]>=sum(model.vbSubjectSchedule[i,j,k] for j in model.sHours))
 
         # :: Each subject can be assigned to at most hours/max hours DAYS and at least 1 hour on each of the days it has been scheduled.
         model.ctSubjectDays = pyo.ConstraintList()
@@ -102,7 +102,7 @@ class course_scheduler:
                 model.ctSubjectSwitches.add(expr = sum(model.vbSubjectSwitches[i,j,k] for j in model.sHours)==2*model.vbSubjectDaysFlags[i,k])
                 
                 # :: Unless a subject can be allocated to a whole day session, the first and last hour of the day cannot be assigned to the same subject
-                if self.max_hours_per_day < len(model.sHours):
+                if self.max_quantity_subjects_per_day < len(model.sHours):
                     model.ctSubjectSwitches.add(expr = model.vbSubjectSchedule[i,model.sHours.first(), k] + model.vbSubjectSchedule[i,model.sHours.last(), k]  <= 1)
        
     
