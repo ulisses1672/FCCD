@@ -3,21 +3,36 @@ import numpy as np
 
 if __name__ == "__main__":
     # Args 
+
+
     days = ['Segunda','Terca','Quarta','Quinta', 'Sexta']
     hours = [f"h_{i}" for i in np.array([8, 10, 14, 16])]
     subjects = ["Matematica","Portugues","Frances","Programacao","Artes"]
 
     length_of_subjects = len(subjects)
 
-    quantity_per_subject = dict(zip(subjects, [2 for i in range(5)]))
+    # Define your subjects
 
-    for i in np.random.choice(subjects, 5):
-        quantity_per_subject[i]+=1
+    # Define your classes
+    turmas = ["Class1", "Class2", "Class3"]
+
+    classes_per_subject = {'Class1': ["Matematica", "Portugues" ,"Artes"],
+                       "Class2":["Programacao", "Portugues" ,"Artes"],
+                       "Class3":["Programacao", "Frances" ,"Matematica"]}
+
+    # Initialize an empty dictionary to store the quantity of subjects for each class
+    quantity_per_subject = {turma: [2 for _ in range(len(classes_per_subject[turma]))] for turma in turmas}
+
+# Update the quantity of subjects for each class
+    for turma in turmas:
+        for _ in range(4):
+            index = np.random.randint(0, len(classes_per_subject[turma]))
+            quantity_per_subject[turma][index] += 1
+
 
     max_quantity_subjects_per_day = 2
 
-    turmas = ["Class1","Class2","Class3"]
-
+    
     TamanhoTurmas = dict(zip(turmas, [20 for i in range(20)]))
 
     for i in np.random.choice(turmas, 3):
@@ -42,7 +57,7 @@ if __name__ == "__main__":
        #  ('Segunda', f"h_{10}", 'Matematica',  1)
     ]
 
-    SCHEDULE = course_scheduler(days, hours, quantity_per_subject, max_quantity_subjects_per_day,turma)
+    SCHEDULE = course_scheduler(days, hours, quantity_per_subject, max_quantity_subjects_per_day,turmas , classes_per_subject)
     SCHEDULE.create_model()
     SCHEDULE.update_preferences(preferences)
     SCHEDULE.update_constraints(constraints)

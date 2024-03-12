@@ -4,12 +4,13 @@ import pyomo.kernel as pmo
 import pandas as pd
 
 class course_scheduler:
-    def __init__(self, days, hours, quantity_per_subject, max_quantity_subjects_per_day , turmas):
+    def __init__(self, days, hours, quantity_per_subject_per_class, max_quantity_subjects_per_day , turmas, classes_per_subject):
         self.days = days
         self.hours = hours
         self.turmas = turmas
-        self.subjects = list(quantity_per_subject.keys())
-        self.quantity_per_subject = quantity_per_subject
+        self.quantity_per_subject_per_class = quantity_per_subject_per_class
+        #self.subjects = list(quantity_per_subject_per_class[turmas[0]].keys())
+        self.classes_per_subject = classes_per_subject
         self.max_quantity_subjects_per_day = max_quantity_subjects_per_day
         self.model = None
         self.schedule = None
@@ -18,46 +19,51 @@ class course_scheduler:
         # MODEL DEFINITION ----------------------------------------------------------
         model = pyo.ConcreteModel()
 
+
         # Sets
+            
         model.sDays = pyo.Set(initialize = self.days, ordered = True)
         model.sHours = pyo.Set(initialize = self.hours, ordered = True)
-        model.sSubjects = pyo.Set(initialize = self.subjects)
+        model.sSubjectsPerClass = pyo.Set(initialize = self.classes_per_subject.items())
         model.sTurmas = pyo.Set(initialize=self.turmas)
 
-        # Parameters
-        model.pHoursPerSubject = pyo.Param(model.sSubjects, initialize = self.quantity_per_subject)
-        model.pMinDaysPerSubject = pyo.Param(model.sSubjects, initialize = dict(zip(self.quantity_per_subject.keys(), [round(i/self.max_quantity_subjects_per_day) for i in list(self.quantity_per_subject.values())])))
-        model.pMaxDaysPerSubject = pyo.Param(model.sSubjects, initialize = self.quantity_per_subject)
 
-        model.pPreferences = pyo.Param(model.sDays, model.sHours, model.sSubjects, initialize = 1.0, mutable = True)
+        # Initialize pHoursPerSubject based on the sum of hours for each class
+        model.pHoursPerSubject = pyo.Param(model.sTurmas, initialize=lambda model, turma:self.quantity_per_subject_per_class[turma])   
+        model.pMinDaysPerSubject = pyo.Param(model.sTurmas, initialize=lambda model, turma:self.quantity_per_subject_per_class[turma])
+        model.pMaxDaysPerSubject  = pyo.Param(model.sTurmas, initialize=lambda model, turma:self.quantity_per_subject_per_class[turma])
+
+        model.pPreferences = pyo.Param(model.sDays, model.sHours, model.sSubjectsPerClass, initialize=1.0, mutable=True)
 
         # Decision variable
-        model.vbSubjectSchedule = pyo.Var(model.sDays, model.sHours, model.sSubjects, domain = pmo.Binary)
+        model.vbSubjectSchedule = pyo.Var(model.sTurmas,model.sDays, model.sHours, model.sSubjectsPerClass, domain = pmo.Binary)
 
         # Helper variables
-        model.vbSubjectDaysFlags = pyo.Var(model.sDays, model.sSubjects, domain = pmo.Binary)
-        model.vIcumulatedHours = pyo.Var(model.sDays, model.sHours, model.sSubjects, domain = pyo.NonNegativeIntegers)
+        model.vbSubjectDaysFlags = pyo.Var(model.sDays, model.sSubjectsPerClass, domain = pmo.Binary)
+        model.vIcumulatedHours = pyo.Var(model.sDays, model.sHours, model.sSubjectsPerClass, domain = pyo.NonNegativeIntegers)
         model.vIsubjectTotalDays = pyo.Var(domain = pyo.NonNegativeIntegers)
-        #model.vISubjectSwitches = pyo.Var(model.sDays, model.sHours, model.sSubjects, domain = pyo.Integers)
-        model.vbSubjectSwitches = pyo.Var(model.sDays, model.sHours, model.sSubjects, domain = pmo.Binary)
+        #model.vISubjectSwitches = pyo.Var(model.sDays, model.sHours, model.sSubjectsPerClass, domain = pyo.Integers)
+        model.vbSubjectSwitches = pyo.Var(model.sDays, model.sHours, model.sSubjectsPerClass, domain = pmo.Binary)
 
         # Constraints 
         #-------- single assignment constraints
         # :: Only one subject can be held in the classroom at the same time
         model.ctOnlyOneSubject = pyo.ConstraintList()
-        for i in model.sDays:
-            for j in model.sHours:
-                model.ctOnlyOneSubject.add(sum(model.vbSubjectSchedule[i,j,k] for k in model.sSubjects)<=1)
+        for o in model.sTurmas:
+            for i in model.sDays:
+                for j in model.sHours:
+                    model.ctOnlyOneSubject.add(sum(model.vbSubjectSchedule[o,i,j,k] for k in model.sSubjectsPerClass)<=1)
 
         #-------- hourly constraints
         # :: All the scheduled hours for a subject must be exactly the total weekly number of hours
         model.ctCoverAllHours = pyo.ConstraintList()
-        for k in model.sSubjects:
-            model.ctCoverAllHours.add(sum(model.vbSubjectSchedule[i,j,k] for i in model.sDays for j in model.sHours)<=model.pHoursPerSubject[k])
-            model.ctCoverAllHours.add(sum(model.vbSubjectSchedule[i,j,k] for i in model.sDays for j in model.sHours)>=model.pHoursPerSubject[k])
+        for o in model.sTurmas:
+            for k in model.sSubjectsPerClass:
+                model.ctCoverAllHours.add(sum(model.vbSubjectSchedule[o,i,j,k] for i in model.sDays for j in model.sHours)<=model.pHoursPerSubject[o])
+                model.ctCoverAllHours.add(sum(model.vbSubjectSchedule[o,i,j,k] for i in model.sDays for j in model.sHours)>=model.pHoursPerSubject[o,k])
 
         model.ctMaxDailyHours = pyo.ConstraintList()
-        for k in model.sSubjects:
+        for k in model.sSubjectsPerClass:
             for i in model.sDays:
                 model.ctMaxDailyHours.add(sum(model.vbSubjectSchedule[i,j,k] for j in model.sHours)<=self.max_quantity_subjects_per_day)
 
@@ -65,13 +71,13 @@ class course_scheduler:
         #-------- daily constraints
         # :: for each subject and day, at most there can be the max daily hours alloted for that subject
         model.ctSubjectDaysFlags = pyo.ConstraintList()
-        for k in model.sSubjects:
+        for k in model.sSubjectsPerClass:
             for i in model.sDays:
                 model.ctSubjectDaysFlags.add(self.max_quantity_subjects_per_day*model.vbSubjectDaysFlags[i,k]>=sum(model.vbSubjectSchedule[i,j,k] for j in model.sHours))
 
         # :: Each subject can be assigned to at most hours/max hours DAYS and at least 1 hour on each of the days it has been scheduled.
         model.ctSubjectDays = pyo.ConstraintList()
-        for k in model.sSubjects:
+        for k in model.sSubjectsPerClass:
             model.ctSubjectDays.add(sum(model.vbSubjectDaysFlags[i,k] for i in model.sDays)<=model.pMaxDaysPerSubject[k])
             model.ctSubjectDays.add(sum(model.vbSubjectDaysFlags[i,k] for i in model.sDays)>=model.pMinDaysPerSubject[k])
 
@@ -80,7 +86,7 @@ class course_scheduler:
         #--------- block constraints
         # :: Cumulative constraints
         model.ctCumulativeHours = pyo.ConstraintList()
-        for k in model.sSubjects:
+        for k in model.sSubjectsPerClass:
             for i in model.sDays:
                 for j in model.sHours:
                     if j!=model.sHours.first():
@@ -91,7 +97,7 @@ class course_scheduler:
 
         # :: Each subject must be given in consecutive blocks
         model.ctSubjectSwitches = pyo.ConstraintList()
-        for k in model.sSubjects:
+        for k in model.sSubjectsPerClass:
             for i in model.sDays:
                 for j in model.sHours:
                     #model.ctSubjectSwitches.add(expr = model.vbSubjectSchedule[i,j,k] - model.vbSubjectSchedule[i,model.sHours.prevw(j), k] == model.vISubjectSwitches[i,j,k])
@@ -108,14 +114,14 @@ class course_scheduler:
     
         #---------- assignment constraints
         # :: try to chunk subjects in as few days as possible, penalizing additional days
-        model.ctCumulativeHours.add(model.vIsubjectTotalDays == sum(model.vbSubjectDaysFlags[i,k] for i in model.sDays for k in model.sSubjects)-sum(model.pMinDaysPerSubject[k] for k in model.sSubjects))
+        model.ctCumulativeHours.add(model.vIsubjectTotalDays == sum(model.vbSubjectDaysFlags[i,k] for i in model.sDays for k in model.sSubjectsPerClass)-sum(model.pMinDaysPerSubject[k] for k in model.sSubjectsPerClass))
         
         penalty = -5
     
 
         # Objective function
         maximize = 1
-        model.objSchedule= pyo.Objective(sense = -maximize, expr =  penalty*(model.vIsubjectTotalDays)+ sum(model.pPreferences[i,j,k]*model.vbSubjectSchedule[i,j,k] for i in model.sDays for j in model.sHours for k in model.sSubjects))
+        model.objSchedule= pyo.Objective(sense = -maximize, expr =  penalty*(model.vIsubjectTotalDays)+ sum(model.pPreferences[i,j,k]*model.vbSubjectSchedule[i,j,k] for i in model.sDays for j in model.sHours for k in model.sSubjectsPerClass))
 
         
         self.model = model
@@ -149,7 +155,7 @@ class course_scheduler:
         bool_class = []
         for i in self.model.sDays:
             for j in self.model.sHours:
-                for k in self.model.sSubjects:
+                for k in self.model.sSubjectsPerClass:
                     hours.append(j)
                     days.append(i)
                     subjects.append(k)
