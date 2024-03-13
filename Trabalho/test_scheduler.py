@@ -14,23 +14,21 @@ if __name__ == "__main__":
     # Define your subjects
 
     # Define your classes
-    turmas = ["Class1", "Class2", "Class3"]
+    turmas = ["Class1"]
 
-    classes_per_subject = {'Class1': ["Matematica", "Portugues" ,"Artes"],
-                       "Class2":["Programacao", "Portugues" ,"Artes"],
-                       "Class3":["Programacao", "Frances" ,"Matematica"]}
+    classes_per_subject = {'Class1': ("Matematica", "Portugues")}
 
     # Initialize an empty dictionary to store the quantity of subjects for each class
     quantity_per_subject = {turma: [2 for _ in range(len(classes_per_subject[turma]))] for turma in turmas}
 
 # Update the quantity of subjects for each class
     for turma in turmas:
-        for _ in range(4):
+        for _ in range(1):
             index = np.random.randint(0, len(classes_per_subject[turma]))
             quantity_per_subject[turma][index] += 1
 
 
-    max_quantity_subjects_per_day = 2
+    max_quantity_subjects_per_day = 1
 
     
     TamanhoTurmas = dict(zip(turmas, [20 for i in range(20)]))
