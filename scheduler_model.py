@@ -3,53 +3,60 @@ import numpy as np
 import pandas as pd
 
 class course_scheduler:
-    def __init__(self, days, hours, course_units_miaa, course_units_leec, max_hours_per_day):
+    def __init__(self, days, hours, courses_overall, max_hours_per_day):
         self.days = days
         self.hours = hours
-        self.course_units_miaa = course_units_miaa
-        self.course_units_leec = course_units_leec
+        self.courses_overall = courses_overall
         self.max_hours_per_day = max_hours_per_day
-        self.model = pyo.ConcreteModel()
-        self.schedule = None
-
-    
+        self.models = []
 
     def create_model(self):
-        model = self.model
-        # Sets
-        model.days = pyo.Set(initialize=self.days)
-        model.hours = pyo.Set(initialize=self.hours)
-        model.courses_miaa = pyo.Set(initialize=self.course_units_miaa.keys())
-        model.courses_leec = pyo.Set(initialize=self.course_units_leec.keys())
+        for courses in self.courses_overall:
+            model = pyo.ConcreteModel()
+            # Sets
+            model.days = pyo.Set(initialize=self.days)
+            model.hours = pyo.Set(initialize=self.hours)
+            model.courses = pyo.Set(initialize=courses.keys())
 
-        # Parameters
-        model.hours_per_course_miaa = pyo.Param(model.courses_miaa, initialize=self.course_units_miaa)
-        model.hours_per_course_leec = pyo.Param(model.courses_leec, initialize=self.course_units_leec)
-        model.max_hours_per_day = self.max_hours_per_day
+            # Parameters
+            model.hours_per_course = pyo.Param(model.courses, initialize=courses)
+            model.max_hours_per_day = self.max_hours_per_day
+            # Max hours per week per course
+            model.max_hours_per_week = {course: hours for course, hours in courses.items()}
 
-        # Variables
-        model.schedule_miaa = pyo.Var(model.days, model.hours, model.courses_miaa, domain=pyo.Binary)
-        model.schedule_leec = pyo.Var(model.days, model.hours, model.courses_leec, domain=pyo.Binary)
+            # Variables
+            model.schedule = pyo.Var(model.days, model.hours, model.courses, domain=pyo.Binary)
 
-        # Objective: For demonstration, let's just maximize the total scheduled hours (this may vary based on actual needs)
-        def objective_rule(model):
-            return sum(model.schedule_miaa[d, h, c] * model.hours_per_course_miaa[c] for d in model.days for h in model.hours for c in model.courses_miaa) + \
-                   sum(model.schedule_leec[d, h, c] * model.hours_per_course_leec[c] for d in model.days for h in model.hours for c in model.courses_leec)
-        model.objective = pyo.Objective(rule=objective_rule, sense=pyo.maximize)
+            # Constraints
+            def max_hours_per_day_rule(model, d):
+                return sum(model.schedule[d, h, c] for h in model.hours for c in model.courses) <= model.max_hours_per_day
 
-        # Constraints: Add basic constraints, e.g., max hours per day
-        def max_hours_per_day_rule(model, d):
-            return sum(model.schedule_miaa[d, h, c] for h in model.hours for c in model.courses_miaa) + \
-                   sum(model.schedule_leec[d, h, c] for h in model.hours for c in model.courses_leec) <= model.max_hours_per_day
-        model.max_hours_per_day_constraint = pyo.Constraint(model.days, rule=max_hours_per_day_rule)
+            def max_hours_per_week_rule(model, c):
+                return sum(model.schedule[d, h, c] for d in model.days for h in model.hours) <= model.max_hours_per_week[c]
+            
+            def max_hours_per_day_per_course_rule(model, d, c):
+                return sum(model.schedule[d, h, c] for h in model.hours) <= 2
 
-        # Additional constraints can be added here
+
+            model.max_hours_per_day_constraint = pyo.Constraint(model.days, rule=max_hours_per_day_rule)
+            model.max_hours_per_week_constraint = pyo.Constraint(model.courses, rule=max_hours_per_week_rule)
+            model.max_hours_per_day_per_course_constraint = pyo.Constraint(model.days, model.courses, rule=max_hours_per_day_per_course_rule)
+
+            # Objective
+            def objective_rule(model):
+                return sum(model.schedule[d, h, c] * model.hours_per_course[c] for d in model.days for h in model.hours for c in model.courses)
+
+            model.objective = pyo.Objective(rule=objective_rule, sense=pyo.maximize)
+
+            self.models.append(model)
 
     def solve(self):
-        #solver = pyo.SolverFactory('glpk')
-        solver = pyo.SolverFactory('cbc')
-        result = solver.solve(self.model)
-        return result
+        for model in self.models:
+            solver = pyo.SolverFactory('cbc')
+            result = solver.solve(model)
+            print(result)
+    
+
     def _create_course_abbreviations(self):
         # Abbreviations for MIAA courses
         self.abbreviations_miaa = {
@@ -71,40 +78,30 @@ class course_scheduler:
     # Ensure the following method is correctly aligned with the class definition.
     ############################################################################################################
     def print_schedule(self):
-        self._create_course_abbreviations()  # Ensure abbreviations are ready
+        # Create course abbreviations
+        self._create_course_abbreviations()
 
-        # Calculate the maximum width needed for any day, abbreviation, or time
-        max_day_width = max(len(day) for day in self.days)
-        max_course_width = max(max(len(abb) for abb in self.abbreviations_miaa.values()), max(len(abb) for abb in self.abbreviations_leec.values()))
-        max_width = max(max_day_width, max_course_width, 10)  # 10 for the time column width
+        for idx, model in enumerate(self.models):
+            print(f"Schedule for Class {idx+1}:")
+            print("+" + "-" * 120 + "+")
+            print("| {:^20} |".format("Time/Day"), end="")
+            for day in model.days:
+                print(" {:^12} |".format(day), end="")
+            print("\n+" + "-" * 120 + "+")
+            for hour in model.hours:
+                print("| {:^20} |".format(hour), end="")
+                for day in model.days:
+                    course_found = False
+                    for course in model.courses:
+                        if model.schedule[day, hour, course].value == 1:
+                            course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
+                            print(" {:^12} |".format(course_abbr), end="")
+                            course_found = True
+                            break
+                    if not course_found:
+                        print(" {:^12} |".format("No class"), end="")
+                print("\n+" + "-" * 120 + "+")
+        print()
 
-        # Initialize an empty schedule grid for MIAA and LEEC
-        schedule_grid_miaa = {h: {d: '' for d in self.days} for h in self.hours}
-        schedule_grid_leec = {h: {d: '' for d in self.days} for h in self.hours}
 
-        # Fill in the schedule grid based on the optimization results
-        for d in self.model.days:
-            for h in self.model.hours:
-                for c in self.model.courses_miaa:
-                    if pyo.value(self.model.schedule_miaa[d, h, c]) > 0.5:
-                        schedule_grid_miaa[h][d] = self.abbreviations_miaa[c]
-                for c in self.model.courses_leec:
-                    if pyo.value(self.model.schedule_leec[d, h, c]) > 0.5:
-                        schedule_grid_leec[h][d] = self.abbreviations_leec[c]
 
-        # Print the schedule grid for MIAA
-        print("MIAA Schedule:")
-        header = "Time".ljust(max_width) + " | " + " | ".join(day.ljust(max_width) for day in self.days)
-        print(header)
-        print("-" * len(header))
-        for h in self.hours:
-            print(f"{h.ljust(max_width)} | " + " | ".join(schedule_grid_miaa[h][d].ljust(max_width) for d in self.days))
-        print("\n")
-
-        # Print the schedule grid for LEEC
-        print("LEEC Schedule:")
-        print(header)  # Reuse the header defined above
-        print("-" * len(header))
-        for h in self.hours:
-            print(f"{h.ljust(max_width)} | " + " | ".join(schedule_grid_leec[h][d].ljust(max_width) for d in self.days))
-        print("\n")

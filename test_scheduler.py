@@ -26,9 +26,9 @@ if __name__ == "__main__":
     course_units_miaa = {
         'Computational Tools for Data Science': 3,
         'Mathematical Foundations for Artificial Intelligence': 3,
-        'Fundamentals of Artificial Intelligence': 4,
+        'Fundamentals of Artificial Intelligence': 3,
         'Statistical Models for AI': 2,
-        'Machine Learning Algorithms': 4,
+        'Machine Learning Algorithms': 2,
     }
 
     course_units_leec = {
@@ -39,10 +39,12 @@ if __name__ == "__main__":
         'Programação Imperativa': 4,
     }
 
-    max_hours_per_day = 6
+    courses_overall = [course_units_miaa , course_units_leec]
+
+    max_hours_per_day = 8
 
     # Assume course_units_miaa, course_units_leec, days, hours, and max_hours_per_day are already defined
-    scheduler = course_scheduler(days, hours, course_units_miaa, course_units_leec, max_hours_per_day)
+    scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day)
 
     #scheduler = course_scheduler(days, hours, course_units_miaa, course_units_leec, max_hours_per_day)
     scheduler.create_model()
