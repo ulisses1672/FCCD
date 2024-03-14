@@ -3,11 +3,27 @@ import numpy as np
 import pandas as pd
 
 class course_scheduler:
-    def __init__(self, days, hours, courses_overall, max_hours_per_day):
+    def __init__(self, days, hours, courses_overall, max_hours_per_day,teachers_Subject , preferencas_dias_professores):
         self.days = days
         self.hours = hours
         self.courses_overall = courses_overall
         self.max_hours_per_day = max_hours_per_day
+        self.teachers_SubjectT = teachers_Subject
+        self.teachers_Subject = dict(teachers_Subject)
+        self.preferencas_dias_professores = dict(preferencas_dias_professores)
+
+        self.models = []
+
+class course_scheduler:
+    def __init__(self, days, hours, courses_overall, max_hours_per_day, teachers_Subject, preferencas_dias_professores):
+        self.days = days
+        self.hours = hours
+        self.courses_overall = courses_overall
+        self.max_hours_per_day = max_hours_per_day
+        self.teachers_SubjectT = teachers_Subject
+        self.teachers_Subject = dict(teachers_Subject)
+        self.preferencas_dias_professores = dict(preferencas_dias_professores)
+
         self.models = []
 
     def create_model(self):
@@ -17,6 +33,8 @@ class course_scheduler:
             model.days = pyo.Set(initialize=self.days)
             model.hours = pyo.Set(initialize=self.hours)
             model.courses = pyo.Set(initialize=courses.keys())
+            model.teachers = pyo.Set(initialize={teacher for teachers in self.teachers_Subject.values() for teacher in teachers})
+            model.teachersSubj = pyo.Set(initialize=self.teachers_Subject.keys())
 
             # Parameters
             model.hours_per_course = pyo.Param(model.courses, initialize=courses)
@@ -36,11 +54,15 @@ class course_scheduler:
             
             def max_hours_per_day_per_course_rule(model, d, c):
                 return sum(model.schedule[d, h, c] for h in model.hours) <= 2
-
+            
+            def teacher_availability_rule(model, d, h, c):
+                available_teachers = [teacher for teacher in self.teachers_Subject[c] if d in self.preferencas_dias_professores[teacher]]
+                return sum(model.schedule[d, h, c] for teacher in available_teachers) >= model.schedule[d, h, c]
 
             model.max_hours_per_day_constraint = pyo.Constraint(model.days, rule=max_hours_per_day_rule)
             model.max_hours_per_week_constraint = pyo.Constraint(model.courses, rule=max_hours_per_week_rule)
             model.max_hours_per_day_per_course_constraint = pyo.Constraint(model.days, model.courses, rule=max_hours_per_day_per_course_rule)
+            model.teacher_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=teacher_availability_rule)
 
             # Objective
             def objective_rule(model):
@@ -49,6 +71,7 @@ class course_scheduler:
             model.objective = pyo.Objective(rule=objective_rule, sense=pyo.maximize)
 
             self.models.append(model)
+
 
     def solve(self):
         for model in self.models:
