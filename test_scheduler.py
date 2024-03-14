@@ -14,6 +14,20 @@ if __name__ == "__main__":
     max_hours_per_day = 6
 
 
+    salas = {'salaA': 0,'salaB': 0, 'salaC': 0,'salaD': 0,'salaE': 0,'ginasio': 0,'lab': 0,'sala de artes': 0}
+
+    discPreferenciasSala = {"Computational Tools for Data Science" : ["salaA", "salaB"] , 
+                        'Mathematical Foundations for Artificial Intelligence': [],
+                        'Fundamentals of Artificial Intelligence': [],
+                        'Statistical Models for AI': [],
+                        'Machine Learning Algorithms': ["salaE"],
+                        'Cálculo': ["salaD", "salaC", "salaD"],
+                        'Matemática Discreta e Álgebra Linear': [],
+                        'Teoria dos Circuitos Elétricos': [],
+                        'Sistemas Digitais': [],
+                        'Programação Imperativa': ["salaA", "salaD"],
+        }
+
     teachers_Subject = {"Computational Tools for Data Science" : ["Celia Oliveira", "Natalia Costa", "Carla Ferreira"] , 
                         'Mathematical Foundations for Artificial Intelligence': ["Celia Oliveira", "Beatriz Rodrigues", "Ana Oliveira"],
                         'Fundamentals of Artificial Intelligence': ["Clara Pereira", "Matilde Carvalho", "Ana Oliveira"],
@@ -41,7 +55,7 @@ if __name__ == "__main__":
                         'Matilde Silva': ['Monday', 'Tuesday', 'Thursday', 'Friday'] ,  
                         'Marisa Oliveira':['Wednesday', 'Thursday', 'Friday'] , 
                         'Bruna Martins': ['Monday', 'Tuesday', 'Wednesday'] , 
-                        'Carla Martins':['Wednesday'] ,  
+                        'Carla Martins':['Monday'] ,  
                         'Maria Rodrigues': ['Monday', 'Tuesday', 'Wednesday', 'Friday'] , 
                         'Matilde Carvalho':['Monday', 'Tuesday', 'Friday'] ,  
                         'Clara Oliveira': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] ,  
@@ -91,7 +105,7 @@ if __name__ == "__main__":
     max_hours_per_day = 8
 
     # Assume course_units_miaa, course_units_leec, days, hours, and max_hours_per_day are already defined
-    scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day,teachers_Subject, preferencas_dias_professores)
+    scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day,teachers_Subject, preferencas_dias_professores,salas,discPreferenciasSala)
 
     #scheduler = course_scheduler(days, hours, course_units_miaa, course_units_leec, max_hours_per_day)
     scheduler.create_model()

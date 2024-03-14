@@ -2,8 +2,9 @@ import pyomo.environ as pyo
 import numpy as np
 import pandas as pd
 
+
 class course_scheduler:
-    def __init__(self, days, hours, courses_overall, max_hours_per_day,teachers_Subject , preferencas_dias_professores):
+    def __init__(self, days, hours, courses_overall, max_hours_per_day,teachers_Subject , preferencas_dias_professores,salas,discPreferenciasSala):
         self.days = days
         self.hours = hours
         self.courses_overall = courses_overall
@@ -11,19 +12,8 @@ class course_scheduler:
         self.teachers_SubjectT = teachers_Subject
         self.teachers_Subject = dict(teachers_Subject)
         self.preferencas_dias_professores = dict(preferencas_dias_professores)
-
-        self.models = []
-
-class course_scheduler:
-    def __init__(self, days, hours, courses_overall, max_hours_per_day, teachers_Subject, preferencas_dias_professores):
-        self.days = days
-        self.hours = hours
-        self.courses_overall = courses_overall
-        self.max_hours_per_day = max_hours_per_day
-        self.teachers_SubjectT = teachers_Subject
-        self.teachers_Subject = dict(teachers_Subject)
-        self.preferencas_dias_professores = dict(preferencas_dias_professores)
-
+        self.salas = dict(salas)
+        self.discPreferenciasSala = dict(discPreferenciasSala)
         self.models = []
 
     def create_model(self):
