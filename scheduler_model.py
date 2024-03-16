@@ -46,9 +46,25 @@ class course_scheduler:
                 return sum(model.schedule[d, h, c] for h in model.hours) <= 2  # Limit each subject to 2 hours per day
 
 
+           # def teacher_availability_rule(model, d, h, c):
+               # available_teachers = [teacher for teacher in self.teachers_Subject[c] if d in self.preferencas_dias_professores[teacher]]
+                #return sum(model.schedule[d, h, c] for teacher in available_teachers) >= model.schedule[d, h, c]
+            
             def teacher_availability_rule(model, d, h, c):
-                available_teachers = [teacher for teacher in self.teachers_Subject[c] if d in self.preferencas_dias_professores[teacher]]
-                return sum(model.schedule[d, h, c] for teacher in available_teachers) >= model.schedule[d, h, c]
+                # Get the chosen teacher for the course
+                chosen_teacher = model.teachers.get(c)
+                if chosen_teacher:
+                    # Check if the chosen teacher is available on the scheduled day
+                    if d in self.preferencas_dias_professores.get(chosen_teacher, []):
+                        # If available, ensure that the selected teacher teaches the course
+                        return sum(model.schedule[d, h, c] for teacher in model.teachers[c] if teacher == chosen_teacher) >= model.schedule[d, h, c]
+                    else:
+                        # If the chosen teacher is not available on the scheduled day, skip the constraint
+                        return pyo.Constraint.Skip
+                else:
+                    # If no teacher is chosen for the course, skip the constraint
+                    return pyo.Constraint.Skip
+
 
             def room_availability_rule(model, d, h, c):
                 return sum(model.room_assignment[d, h, c, room] for room in model.rooms) == 1

@@ -1,4 +1,25 @@
 from scheduler_model import course_scheduler
+import random
+
+
+
+def assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores):
+    """
+    Assigns one respective teacher for each course based on teacher availability preferences.
+    """
+    course_teachers = {}
+    for course, teachers in teachers_Subject.items():
+        available_teachers = [teacher for teacher in teachers if preferencas_dias_professores.get(teacher)]
+        if available_teachers:
+            selected_teacher = random.choice(available_teachers)
+            course_teachers[course] = selected_teacher
+        else:
+            # If no available teacher found, assign None
+            course_teachers[course] = None
+    return course_teachers
+
+
+
 
 if __name__ == "__main__":
     #days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
@@ -104,8 +125,17 @@ if __name__ == "__main__":
 
     max_hours_per_day = 8
 
+    teachers_chosen = {}
+
+    # Use the new function to assign teachers to courses
+    assigned_teachers = assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores)
+    print("Assigned Teachers to Courses:")
+    for course, teacher in assigned_teachers.items():
+        print(f"{course}: {teacher}")
+        teachers_chosen[course] = teacher
+
     # Assume course_units_miaa, course_units_leec, days, hours, and max_hours_per_day are already defined
-    scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day,teachers_Subject, preferencas_dias_professores,salas,discPreferenciasSala)
+    scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day,teachers_chosen, preferencas_dias_professores,salas,discPreferenciasSala)
 
     #scheduler = course_scheduler(days, hours, course_units_miaa, course_units_leec, max_hours_per_day)
     scheduler.create_model()
