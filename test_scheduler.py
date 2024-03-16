@@ -14,7 +14,7 @@ if __name__ == "__main__":
     max_hours_per_day = 6
 
 
-    salas = {'salaA': 0,'salaB': 0, 'salaC': 0,'salaD': 0,'salaE': 0,'ginasio': 0,'lab': 0,'sala de artes': 0}
+    salas = {'salaA': 0,'salaB': 0, 'salaC': 0,'salaD': 0,'salaE': 0,'ginasio': 0,'lab': 0,'salaArtes': 0}
 
     discPreferenciasSala = {"Computational Tools for Data Science" : ["salaA", "salaB"] , 
                         'Mathematical Foundations for Artificial Intelligence': [],
