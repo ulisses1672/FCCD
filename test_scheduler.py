@@ -8,7 +8,7 @@ if __name__ == "__main__":
     # Define days, hours, and course units for both programs (simplified here)
     
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-    hours = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM"]
+    hours = ["9", "10", "11", "12", "14", "15", "16", "17"]
     course_units_miaa = {'CTDS': 3, 'MFAI': 3, 'FAI': 4, 'SMAI': 2, 'MLA': 4}
     course_units_leec = {'CAL': 4, 'MDAL': 3, 'TCE': 3, 'SD': 3, 'PI': 4}
     max_hours_per_day = 6
@@ -22,7 +22,7 @@ if __name__ == "__main__":
                         'Statistical Models for AI': [],
                         'Machine Learning Algorithms': ["salaE"],
                         'Cálculo': ["salaD", "salaC", "salaD"],
-                        'Matemática Discreta e Álgebra Linear': [],
+                        'Matemática Discreta e Álgebra Linear': ["salaB"],
                         'Teoria dos Circuitos Elétricos': [],
                         'Sistemas Digitais': [],
                         'Programação Imperativa': ["salaA", "salaD"],
@@ -55,7 +55,7 @@ if __name__ == "__main__":
                         'Matilde Silva': ['Monday', 'Tuesday', 'Thursday', 'Friday'] ,  
                         'Marisa Oliveira':['Wednesday', 'Thursday', 'Friday'] , 
                         'Bruna Martins': ['Monday', 'Tuesday', 'Wednesday'] , 
-                        'Carla Martins':['Monday'] ,  
+                        'Carla Martins':['Wednesday'] ,  
                         'Maria Rodrigues': ['Monday', 'Tuesday', 'Wednesday', 'Friday'] , 
                         'Matilde Carvalho':['Monday', 'Tuesday', 'Friday'] ,  
                         'Clara Oliveira': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] ,  

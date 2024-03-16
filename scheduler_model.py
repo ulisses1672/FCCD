@@ -44,6 +44,7 @@ class course_scheduler:
             def max_hours_per_week_rule(model, c):
                 return sum(model.schedule[d, h, c] for d in model.days for h in model.hours) <= model.max_hours_per_week[c]
 
+
             def max_hours_per_day_per_course_rule(model, d, c):
                 return sum(model.schedule[d, h, c] for h in model.hours) <= 2
 
@@ -61,12 +62,27 @@ class course_scheduler:
                 else:
                     return pyo.Constraint.Skip  # Skip constraint if there are no preferences
 
-            model.max_hours_per_day_constraint = pyo.Constraint(model.days, rule=max_hours_per_day_rule)
-            model.max_hours_per_week_constraint = pyo.Constraint(model.courses, rule=max_hours_per_week_rule)
-            model.max_hours_per_day_per_course_constraint = pyo.Constraint(model.days, model.courses, rule=max_hours_per_day_per_course_rule)
+            def consecutive_blocks_rule(model, d, h, c):
+                # Check if the current hour is the first hour of the day
+                if h == model.hours.first():
+                    return model.schedule[d, h, c] <= model.schedule[d, model.hours.next(h), c]
+                # Check if the current hour is the last hour of the day
+                elif h == model.hours.last():
+                    return model.schedule[d, h, c] <= model.schedule[d, model.hours.prev(h), c]
+                else:
+                    # If not the first or last hour, check if the course is scheduled consecutively
+                    return model.schedule[d, h, c] <= model.schedule[d, model.hours.next(h), c] + model.schedule[d, model.hours.prev(h), c]
+
+
             model.teacher_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=teacher_availability_rule)
             model.room_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_availability_rule)
             model.room_preferences_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_preferences_rule)
+
+            model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
+
+            model.max_hours_per_week_constraint = pyo.Constraint(model.courses, rule=max_hours_per_week_rule)
+            model.max_hours_per_day_per_course_constraint = pyo.Constraint(model.days, model.courses, rule=max_hours_per_day_per_course_rule)
+            model.max_hours_per_day_constraint = pyo.Constraint(model.days, rule=max_hours_per_day_rule)
 
             # Objective
             def objective_rule(model):
