@@ -4,7 +4,7 @@ import pandas as pd
 
 
 class course_scheduler:
-    def __init__(self, days, hours, courses_overall, max_hours_per_day,teachers_Subject , preferencas_dias_professores,salas,discPreferenciasSala):
+    def __init__(self, days, hours, courses_overall, max_hours_per_day, teachers_Subject, preferencas_dias_professores, salas, discPreferenciasSala):
         self.days = days
         self.hours = hours
         self.courses_overall = courses_overall
@@ -25,6 +25,7 @@ class course_scheduler:
             model.courses = pyo.Set(initialize=courses.keys())
             model.teachers = pyo.Set(initialize={teacher for teachers in self.teachers_Subject.values() for teacher in teachers})
             model.teachersSubj = pyo.Set(initialize=self.teachers_Subject.keys())
+            model.rooms = pyo.Set(initialize=self.salas.keys())
 
             # Parameters
             model.hours_per_course = pyo.Param(model.courses, initialize=courses)
@@ -34,6 +35,7 @@ class course_scheduler:
 
             # Variables
             model.schedule = pyo.Var(model.days, model.hours, model.courses, domain=pyo.Binary)
+            model.room_assignment = pyo.Var(model.days, model.hours, model.courses, model.rooms, domain=pyo.Binary)
 
             # Constraints
             def max_hours_per_day_rule(model, d):
@@ -41,18 +43,30 @@ class course_scheduler:
 
             def max_hours_per_week_rule(model, c):
                 return sum(model.schedule[d, h, c] for d in model.days for h in model.hours) <= model.max_hours_per_week[c]
-            
+
             def max_hours_per_day_per_course_rule(model, d, c):
                 return sum(model.schedule[d, h, c] for h in model.hours) <= 2
-            
+
             def teacher_availability_rule(model, d, h, c):
                 available_teachers = [teacher for teacher in self.teachers_Subject[c] if d in self.preferencas_dias_professores[teacher]]
                 return sum(model.schedule[d, h, c] for teacher in available_teachers) >= model.schedule[d, h, c]
+
+            def room_availability_rule(model, d, h, c):
+                return sum(model.room_assignment[d, h, c, room] for room in model.rooms) == 1
+
+            def room_preferences_rule(model, d, h, c):
+                course_preferences = self.discPreferenciasSala.get(c, [])
+                if course_preferences:
+                    return sum(model.room_assignment[d, h, c, room] for room in course_preferences) >= model.schedule[d, h, c]
+                else:
+                    return pyo.Constraint.Skip  # Skip constraint if there are no preferences
 
             model.max_hours_per_day_constraint = pyo.Constraint(model.days, rule=max_hours_per_day_rule)
             model.max_hours_per_week_constraint = pyo.Constraint(model.courses, rule=max_hours_per_week_rule)
             model.max_hours_per_day_per_course_constraint = pyo.Constraint(model.days, model.courses, rule=max_hours_per_day_per_course_rule)
             model.teacher_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=teacher_availability_rule)
+            model.room_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_availability_rule)
+            model.room_preferences_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_preferences_rule)
 
             # Objective
             def objective_rule(model):
@@ -96,25 +110,30 @@ class course_scheduler:
 
         for idx, model in enumerate(self.models):
             print(f"Schedule for Class {idx+1}:")
-            print("+" + "-" * 120 + "+")
-            print("| {:^20} |".format("Time/Day"), end="")
+            print("+" + "-" * 150 + "+")
+            print("| {:^25} | {:^20} |".format("Time/Day", "Room/Class"), end="")
             for day in model.days:
                 print(" {:^12} |".format(day), end="")
-            print("\n+" + "-" * 120 + "+")
+            print("\n+" + "-" * 150 + "+")
             for hour in model.hours:
-                print("| {:^20} |".format(hour), end="")
+                print("| {:^25} |".format(hour), end="")
                 for day in model.days:
-                    course_found = False
                     for course in model.courses:
                         if model.schedule[day, hour, course].value == 1:
                             course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
-                            print(" {:^12} |".format(course_abbr), end="")
-                            course_found = True
+                            room_assigned = None
+                            for room in model.rooms:
+                                if model.room_assignment[day, hour, course, room].value == 1:
+                                    room_assigned = room
+                                    break
+                            print(" {:^10}({:^10}) |".format(course_abbr, room_assigned), end="")
                             break
-                    if not course_found:
-                        print(" {:^12} |".format("No class"), end="")
-                print("\n+" + "-" * 120 + "+")
+                    else:
+                        print(" {:^22} |".format("No class"), end="")
+                print("\n+" + "-" * 150 + "+")
         print()
+
+
 
 
 
