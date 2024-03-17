@@ -9,7 +9,6 @@ class course_scheduler:
         self.hours = hours
         self.courses_overall = courses_overall
         self.max_hours_per_day = max_hours_per_day
-        self.teachers_SubjectT = teachers_Subject
         self.teachers_Subject = dict(teachers_Subject)
         self.preferencas_dias_professores = dict(preferencas_dias_professores)
         self.salas = dict(salas)
@@ -23,8 +22,11 @@ class course_scheduler:
             model.days = pyo.Set(initialize=self.days)
             model.hours = pyo.Set(initialize=self.hours)
             model.courses = pyo.Set(initialize=courses.keys())
-            model.teachers = pyo.Set(initialize={teacher for teachers in self.teachers_Subject.values() for teacher in teachers})
-            model.teachersSubj = pyo.Set(initialize=self.teachers_Subject.keys())
+
+            # Parameters
+            model.teacher_indices = pyo.Set(initialize=self.teachers_Subject.keys())
+            model.teacher = pyo.Param(model.teacher_indices, initialize=self.teachers_Subject)
+
             model.rooms = pyo.Set(initialize=self.salas.keys())
 
             # Parameters
@@ -44,26 +46,6 @@ class course_scheduler:
 
             def max_hours_per_day_per_course_rule(model, d, c):
                 return sum(model.schedule[d, h, c] for h in model.hours) <= 2  # Limit each subject to 2 hours per day
-
-
-           # def teacher_availability_rule(model, d, h, c):
-               # available_teachers = [teacher for teacher in self.teachers_Subject[c] if d in self.preferencas_dias_professores[teacher]]
-                #return sum(model.schedule[d, h, c] for teacher in available_teachers) >= model.schedule[d, h, c]
-            
-            def teacher_availability_rule(model, d, h, c):
-                # Get the chosen teacher for the course
-                chosen_teacher = model.teachers.get(c)
-                if chosen_teacher:
-                    # Check if the chosen teacher is available on the scheduled day
-                    if d in self.preferencas_dias_professores.get(chosen_teacher, []):
-                        # If available, ensure that the selected teacher teaches the course
-                        return sum(model.schedule[d, h, c] for teacher in model.teachers[c] if teacher == chosen_teacher) >= model.schedule[d, h, c]
-                    else:
-                        # If the chosen teacher is not available on the scheduled day, skip the constraint
-                        return pyo.Constraint.Skip
-                else:
-                    # If no teacher is chosen for the course, skip the constraint
-                    return pyo.Constraint.Skip
 
 
             def room_availability_rule(model, d, h, c):
@@ -92,15 +74,32 @@ class course_scheduler:
                         # If not the first or last hour, check if the course is scheduled consecutively
                         return model.schedule[d, h, c] <= model.schedule[d, model.hours.next(h), c] + model.schedule[d, model.hours.prev(h), c]
 
-            
-            model.teacher_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=teacher_availability_rule)
+                # Teacher preferences constraint
+            # Define constraint to enforce teacher availability
+            def teacher_availability_constraint_rule(model, d, h, c):
+                assigned_teacher = model.teacher[c]  # Get the assigned teacher for the course
+                if assigned_teacher in self.preferencas_dias_professores:
+                    # If the assigned teacher is in the preferences dictionary
+                    if d in self.preferencas_dias_professores[assigned_teacher]:
+                        # If the assigned teacher is available on the scheduled day, return True
+                        return model.schedule[d, h, c] <= 1
+                    else:
+                        # If the assigned teacher is not available on the scheduled day, return False
+                        return model.schedule[d, h, c] <= 0
+                else:
+                    # If the assigned teacher is not in the preferences dictionary, return True
+                    return model.schedule[d, h, c] <= 1
+
+            # Add the constraint to the model
+            model.teacher_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=teacher_availability_constraint_rule)
+
             model.room_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_availability_rule)
             model.room_preferences_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_preferences_rule)
 
             model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
 
-            model.max_hours_per_week_constraint = pyo.Constraint(model.courses, rule=max_hours_per_week_rule)
             model.max_hours_per_day_per_course_constraint = pyo.Constraint(model.days, model.courses, rule=max_hours_per_day_per_course_rule)
+            model.max_hours_per_week_constraint = pyo.Constraint(model.courses, rule=max_hours_per_week_rule)
 
 
             # Objective
@@ -146,7 +145,7 @@ class course_scheduler:
         for idx, model in enumerate(self.models):
             print(f"Schedule for Class {idx+1}:")
             print("+" + "-" * 150 + "+")
-            print("| {:^25} | {:^20} |".format("Time/Day", "Room/Class"), end="")
+            print("| {:^25} |".format("Time/Day"), end="")
             for day in model.days:
                 print(" {:^12} |".format(day), end="")
             print("\n+" + "-" * 150 + "+")
@@ -167,6 +166,7 @@ class course_scheduler:
                         print(" {:^22} |".format("No class"), end="")
                 print("\n+" + "-" * 150 + "+")
         print()
+
 
 
 
