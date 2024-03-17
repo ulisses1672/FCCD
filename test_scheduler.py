@@ -143,3 +143,6 @@ if __name__ == "__main__":
     scheduler.print_schedule()  # Add this line to print the schedule
 
     
+    
+    scheduler.print_and_export_schedule() # Add this line to print and export the schedule to a PDF file
+    
