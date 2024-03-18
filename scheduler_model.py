@@ -1,9 +1,7 @@
 import pyomo.environ as pyo
 import numpy as np
 import pandas as pd
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib import colors
+
 
 class course_scheduler:
     def __init__(self, days, hours, courses_overall, max_hours_per_day, teachers_Subject, preferencas_dias_professores, salas, discPreferenciasSala):
@@ -169,63 +167,6 @@ class course_scheduler:
                 print("\n+" + "-" * 150 + "+")
         print()
 
-
-        
-    def print_and_export_schedule(self):
-        filename = 'schedule.pdf'
-        # Create course abbreviations
-        self._create_course_abbreviations()
-
-        # Prepare the data for the PDF
-        data = []
-
-        for idx, model in enumerate(self.models):
-            # Add the header row to the data
-            data.append(["Schedule for Class", f"{idx+1}"])
-
-            # Add the Time/Day row to the data
-            data.append(["Time/Day"] + [day for day in model.days])
-
-            # Loop over each hour
-            for hour in model.hours:
-                row = [hour]
-                # Loop over each day
-                for day in model.days:
-                    # Loop over each course
-                    for course in model.courses:
-                        # Check if the course is scheduled for this hour and day
-                        if model.schedule[day, hour, course].value == 1:
-                            # Get the abbreviation of the course
-                            course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
-                            room_assigned = None
-                            # Find the room assigned to the course for this hour and day
-                            for room in model.rooms:
-                                if model.room_assignment[day, hour, course, room].value == 1:
-                                    room_assigned = room
-                                    break
-                            # Add the course abbreviation and room assignment to the row
-                            row.append(f"{course_abbr}({room_assigned})")
-                            break
-                    else:
-                        # If no course is scheduled for this hour and day, add "No class" to the row
-                        row.append("No class")
-                # Add the row to the data
-                data.append(row)
-
-        # Create the PDF
-        pdf = SimpleDocTemplate(filename, pagesize=letter)
-        table = Table(data)
-        table.setStyle(TableStyle([
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 14),
-            ('BACKGROUND', (0, 0), (-1, 1), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 1), colors.whitesmoke),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black)
-        ]))
-        elems = [table]
-        pdf.build(elems)
 
 
 
