@@ -44,8 +44,11 @@ if __name__ == "__main__":
                         'Machine Learning Algorithms': ["salaE"],
                         'Cálculo': ["salaD", "salaC", "salaD"],
                         'Matemática Discreta e Álgebra Linear': ["salaB"],
+                        'Matemática Discreta': ["salaB"],
                         'Teoria dos Circuitos Elétricos': [],
                         'Sistemas Digitais': [],
+                        'Redes de Computadores': ["salaC", "salaD"],
+                        'Laboratórios de Informática': ["lab"],
                         'Programação Imperativa': ["salaA", "salaD"],
         }
 
@@ -56,8 +59,11 @@ if __name__ == "__main__":
                         'Machine Learning Algorithms': ["Celia Oliveira", "Natalia Costa", "Carla Ferreira"],
                         'Cálculo': ["Silvia Fernandes", "Matilde Silva"],
                         'Matemática Discreta e Álgebra Linear': ["Carla Martins"],
+                        'Matemática Discreta': ["Carla Martins"],
                         'Teoria dos Circuitos Elétricos': ["Carla Sousa", "Maria Rodrigues", "Matilde Carvalho"],
                         'Sistemas Digitais': ["Silvia Fernandes", "Clara Oliveira", "Carla Ferreira"],
+                        'Redes de Computadores': ["Marisa Oliveira", "Bruna Martins", "Matilde Carvalho"],
+                        'Laboratórios de Informática': ["Clara Oliveira", "Clara Varzim"],
                         'Programação Imperativa': ["Clara Varzim", "Carla Ferreira"],
         }
     
@@ -121,7 +127,15 @@ if __name__ == "__main__":
         'Programação Imperativa': 4,
     }
 
-    courses_overall = [course_units_miaa , course_units_leec]
+    course_units_lesi = {
+        'Programação Imperativa': 6,
+        'Matemática Discreta': 6 ,
+        'Cálculo': 6,
+        'Redes de Computadores': 6,
+        'Laboratórios de Informática': 4,
+    }
+
+    courses_overall = [course_units_miaa , course_units_leec, course_units_lesi]
 
     max_hours_per_day = 8
 
@@ -141,8 +155,6 @@ if __name__ == "__main__":
     scheduler.create_model()
     result = scheduler.solve()
     scheduler.print_schedule()  # Add this line to print the schedule
-
-    
     
     #scheduler.print_and_export_schedule('schedule.pdf') # Add this line to print and export the schedule to a PDF file
     

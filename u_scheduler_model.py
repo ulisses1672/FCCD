@@ -65,6 +65,7 @@ class course_scheduler:
                 else:
                     return pyo.Constraint.Skip  # Skip constraint if there are no preferences
 
+            # Consecutive blocks constraint (Aulas Seguidas)
             def consecutive_blocks_rule(model, d, h, c):
                 if h == model.hours.first() and h != model.hours.last():
                     # If the first hour of the day is scheduled, the next hour must also be scheduled
@@ -78,7 +79,8 @@ class course_scheduler:
                 else:
                     # If there's only one hour in the set, then we don't enforce consecutive blocks
                     return pyo.Constraint.Skip
-
+                
+            # Room consistency constraint (Aulas na mesma sala)
             def room_consistency_rule(model, d, c, h):
                 if h == model.hours.last():  # Skip the last hour since there's no next hour to compare
                     return pyo.Constraint.Skip
@@ -107,20 +109,15 @@ class course_scheduler:
 
             # Add the constraint to the model
             model.teacher_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=teacher_availability_constraint_rule)
-
             model.room_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_availability_rule)
             model.room_preferences_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_preferences_rule)
-
             # Consecutive blocks constraint
             model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
-            
-            # Adding the constraint to the model for each course, day, and hour
-             #model.room_consistency_constraint = pyo.Constraint(model.days, model.courses, model.hours, rule=room_consistency_rule)
-
-            model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
-
+            #model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
             model.max_hours_per_day_per_course_constraint = pyo.Constraint(model.days, model.courses, rule=max_hours_per_day_per_course_rule)
             model.max_hours_per_week_constraint = pyo.Constraint(model.courses, rule=max_hours_per_week_rule)
+            # Adding the constraint to the model for each course, day, and hour
+            #model.room_consistency_constraint = pyo.Constraint(model.days, model.courses, model.hours, rule=room_consistency_rule)
 
 
             # Objective
@@ -156,6 +153,14 @@ class course_scheduler:
             'Sistemas Digitais': 'SD',
             'Programação Imperativa': 'PI',
         }
+         # Abbreviations for LESI courses
+        self.abbreviations_lesi = {
+        'Programação Imperativa': 'PI',
+        'Matemática Discreta': 'MD' ,
+        'Cálculo': 'CAL',
+        'Redes de Computadores': 'RC',
+        'Laboratórios de Informática': 'LI',
+    }
     
     
 
@@ -169,6 +174,7 @@ class course_scheduler:
         class_names = {
             0: 'MIAA',
             1: 'LEEC',
+            2: 'LESI',
         }
         
         for idx, model in enumerate(self.models):
@@ -187,7 +193,7 @@ class course_scheduler:
                     for course in model.courses:
                         if model.schedule[day, hour, course].value == 1:
                             # Lookup course abbreviation based on course name
-                            course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
+                            course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, self.abbreviations_lesi.get(course, course)))
                             room_assigned = None
                             for room in model.rooms:
                                 if model.room_assignment[day, hour, course, room].value == 1:
@@ -201,15 +207,25 @@ class course_scheduler:
         print()
 
     ############################################################################################################
-    """"def print_and_export_schedule(self, filename):
+    def print_and_export_schedule(self, filename):
         # Create course abbreviations
         self._create_course_abbreviations()
 
         # Prepare the data for the PDF
         data = []
 
+        # Dictionary to map model index to class name
+        class_names = {
+            0: 'MIAA',
+            1: 'LEEC',
+            2: 'LESI',
+        }
+
         for idx, model in enumerate(self.models):
-            print(f"Schedule for Class {idx+1}:")
+            # Use class_names to get the class name based on idx; default to 'Class {idx+1}' if not found
+            class_name = class_names.get(idx, f'Class {idx+1}')
+            
+            print(f"Schedule for {class_name}:")
             print("+" + "-" * 150 + "+")
             print("| {:^25} |".format("Time/Day"), end="")
             for day in model.days:
@@ -217,32 +233,33 @@ class course_scheduler:
             print("\n+" + "-" * 150 + "+")
 
             # Add the header to the data
-            data.append(["Time/Day"] + model.days)
+            data.append([f"Schedule for {class_name}"] + ["Time/Day"] + model.days)
 
             for hour in model.hours:
                 print("| {:^25} |".format(hour), end="")
                 row = [hour]
                 for day in model.days:
+                    found = False
                     for course in model.courses:
-                        if model.schedule[day, hour, course].value == 1:
-                            course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
+                        if pyo.value(model.schedule[day, hour, course]) == 1:
+                            course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, self.abbreviations_lesi.get(course, course)))
                             room_assigned = None
                             for room in model.rooms:
-                                if model.room_assignment[day, hour, course, room].value == 1:
+                                if pyo.value(model.room_assignment[day, hour, course, room]) == 1:
                                     room_assigned = room
                                     break
-                            print(" {:^10}({:^10}) |".format(course_abbr, room_assigned), end="")
+                            print(f" {course_abbr}({room_assigned}) |", end="")
                             row.append(f"{course_abbr}({room_assigned})")
+                            found = True
                             break
-                else:
-                    print(" {:^22} |".format("No class"), end="")
-                    row.append("No class")
+                    if not found:
+                        print(" {:^22} |".format("No class"), end="")
+                        row.append("No class")
                 print("\n+" + "-" * 150 + "+")
-
-                # Add the row to the data
                 data.append(row)
 
-            print()
+            # Add a blank line to separate between classes in the data
+            data.append([""] * (len(model.days) + 2))
 
         # Create the PDF
         pdf = SimpleDocTemplate(filename, pagesize=letter)
@@ -257,8 +274,9 @@ class course_scheduler:
 
             ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('GRID', (0,0), (-1,-1), 1, colors.black)
+            ('GRID', (0,0), (-1,-1), 1, colors.black),
+            ('SPAN', (0,0), (-1,0))  # Span the header row across all columns
         ]))
         elems = []
         elems.append(table)
-        pdf.build(elems)"""""
+        pdf.build(elems)
