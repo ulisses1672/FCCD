@@ -1,8 +1,6 @@
 from u_scheduler_model import course_scheduler
 import random
 
-
-
 def assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores):
     """
     Assigns one respective teacher for each course based on teacher availability preferences.
@@ -18,26 +16,16 @@ def assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores):
             course_teachers[course] = None
     return course_teachers
 
+days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+hours = ["9", "10", "11", "12", "14", "15", "16", "17"]
+course_units_miaa = {'CTDS': 3, 'MFAI': 3, 'FAI': 4, 'SMAI': 2, 'MLA': 4}
+course_units_leec = {'CAL': 4, 'MDAL': 3, 'TCE': 3, 'SD': 3, 'PI': 4}
+max_hours_per_day = 6
 
 
+salas = {'salaA': 0,'salaB': 0, 'salaC': 0,'salaD': 0,'salaE': 0,'ginasio': 0,'lab': 0,'salaArtes': 0}
 
-if __name__ == "__main__":
-    #days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-    #hours = [f"Hour_{i}" for i in range(8, 18)]
-    # Adjusting hours to reflect actual time slots for readability
-    #hours = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"]
-    # Define days, hours, and course units for both programs (simplified here)
-    
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-    hours = ["9", "10", "11", "12", "14", "15", "16", "17"]
-    course_units_miaa = {'CTDS': 3, 'MFAI': 3, 'FAI': 4, 'SMAI': 2, 'MLA': 4}
-    course_units_leec = {'CAL': 4, 'MDAL': 3, 'TCE': 3, 'SD': 3, 'PI': 4}
-    max_hours_per_day = 6
-
-
-    salas = {'salaA': 0,'salaB': 0, 'salaC': 0,'salaD': 0,'salaE': 0,'ginasio': 0,'lab': 0,'salaArtes': 0}
-
-    discPreferenciasSala = {"Computational Tools for Data Science" : ["salaA", "salaB"] , 
+discPreferenciasSala = {"Computational Tools for Data Science" : ["salaA", "salaB"] , 
                         'Mathematical Foundations for Artificial Intelligence': [],
                         'Fundamentals of Artificial Intelligence': [],
                         'Statistical Models for AI': [],
@@ -49,7 +37,9 @@ if __name__ == "__main__":
                         'Programação Imperativa': ["salaA", "salaD"],
         }
 
-    teachers_Subject = {"Computational Tools for Data Science" : ["Celia Oliveira", "Natalia Costa", "Carla Ferreira"] , 
+
+
+teachers_Subject = {"Computational Tools for Data Science" : ["Celia Oliveira", "Natalia Costa", "Carla Ferreira"] , 
                         'Mathematical Foundations for Artificial Intelligence': ["Celia Oliveira", "Beatriz Rodrigues", "Ana Oliveira"],
                         'Fundamentals of Artificial Intelligence': ["Clara Pereira", "Matilde Carvalho", "Ana Oliveira"],
                         'Statistical Models for AI': ["Carla Sousa", "Celia Santos"],
@@ -60,9 +50,8 @@ if __name__ == "__main__":
                         'Sistemas Digitais': ["Silvia Fernandes", "Clara Oliveira", "Carla Ferreira"],
                         'Programação Imperativa': ["Clara Varzim", "Carla Ferreira"],
         }
-    
 
-    preferencas_dias_professores = {
+preferencas_dias_professores = {
                         "Celia Oliveira" : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] , 
                         'Natalia Costa': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] ,  
                         'Carla Ferreira': ['Wednesday', 'Thursday', 'Friday'] , 
@@ -83,7 +72,7 @@ if __name__ == "__main__":
                         'Clara Varzim': ['Tuesday', 'Wednesday', 'Thursday'] , 
     }
 
-    professoresAvaiability = {
+professoresAvaiability = {
                         "Celia Oliveira" : 0 , 
                         'Natalia Costa': 0 ,  
                         'Carla Ferreira': 0, 
@@ -105,7 +94,7 @@ if __name__ == "__main__":
     }
 
 
-    course_units_miaa = {
+course_units_miaa = {
         'Computational Tools for Data Science': 3,
         'Mathematical Foundations for Artificial Intelligence': 2,
         'Fundamentals of Artificial Intelligence': 3,
@@ -113,7 +102,7 @@ if __name__ == "__main__":
         'Machine Learning Algorithms': 2,
     }
 
-    course_units_leec = {
+course_units_leec = {
         'Cálculo': 4,
         'Matemática Discreta e Álgebra Linear': 4 ,
         'Teoria dos Circuitos Elétricos': 3,
@@ -121,28 +110,85 @@ if __name__ == "__main__":
         'Programação Imperativa': 4,
     }
 
-    courses_overall = [course_units_miaa , course_units_leec]
 
-    max_hours_per_day = 8
+courses_overall = [course_units_miaa , course_units_leec]
 
-    teachers_chosen = {}
+max_hours_per_day = 8
 
-    # Use the new function to assign teachers to courses
+teachers_chosen = {}
+
+# Use the new function to assign teachers to courses
+assigned_teachers = assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores)
+print("Assigned Teachers to Courses:")
+for course, teacher in assigned_teachers.items():
+    print(f"{course}: {teacher}")
+    teachers_chosen[course] = teacher
+
+
+def show_schedule():
     assigned_teachers = assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores)
-    print("Assigned Teachers to Courses:")
-    for course, teacher in assigned_teachers.items():
-        print(f"{course}: {teacher}")
-        teachers_chosen[course] = teacher
-
-    # Assume course_units_miaa, course_units_leec, days, hours, and max_hours_per_day are already defined
-    scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day,teachers_chosen, preferencas_dias_professores,salas,discPreferenciasSala)
-
-    #scheduler = course_scheduler(days, hours, course_units_miaa, course_units_leec, max_hours_per_day)
+    scheduler = course_scheduler(days, hours, [course_units_miaa, course_units_leec], max_hours_per_day, assigned_teachers, preferencas_dias_professores, salas, discPreferenciasSala)
     scheduler.create_model()
-    result = scheduler.solve()
-    scheduler.print_schedule()  # Add this line to print the schedule
+    if scheduler.solve():
+        scheduler.print_schedule()
+    else:
+        print("Failed to generate a schedule.")
 
-    
-    
-    #scheduler.print_and_export_schedule('schedule.pdf') # Add this line to print and export the schedule to a PDF file
-    
+def add_course():
+    course_name = input("Enter the new course name: ")
+    course_units = input("Enter the number of units for the course: ")
+    program = input("Enter the program for the course (MIAA/LEEC): ").upper()
+    # Simple validation for units input
+    try:
+        course_units = int(course_units)
+    except ValueError:
+        print("Invalid number of units.")
+        return
+
+    if program not in ["MIAA", "LEEC"]:
+        print("Invalid program. Please enter either 'MIAA' or 'LEEC'.")
+        return
+
+    # Add course to the respective program
+    if program == "MIAA":
+        course_units_miaa[course_name] = course_units
+    else:
+        course_units_leec[course_name] = course_units
+
+    # Optionally, you can prompt for room preferences and teacher preferences here
+
+    # Automatically assign a teacher based on availability (simplified for this example)
+    # This step would be more complex in a real system and might involve additional user input or more sophisticated logic
+    available_teachers = [teacher for teacher, days in preferencas_dias_professores.items() if days]  # Simplified check for availability
+    if available_teachers:
+        selected_teacher = random.choice(available_teachers)
+        teachers_Subject[course_name] = [selected_teacher]
+    else:
+        teachers_Subject[course_name] = ["No teacher assigned"]  # Fallback case
+
+    print(f"Course '{course_name}' added to program {program} with {course_units} units and assigned teacher: {teachers_Subject[course_name][0]}")
+
+    # In a real system, you might now call a function to update the schedule
+    # For example: update_schedule()
+
+
+def main_menu():
+    while True:
+        print("\n--- Course Scheduler Menu ---")
+        print("1. View Schedule")
+        print("2. Add Course")
+        print("3. Exit")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            show_schedule()
+        elif choice == "2":
+            add_course()
+        elif choice == "3":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice, please enter 1, 2, or 3.")
+
+if __name__ == "__main__":
+    main_menu()

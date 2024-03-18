@@ -35,7 +35,9 @@ class course_scheduler:
             
             # Consecutive blocks constraint
             model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
-
+            ############################################################################################################
+            # Adding the constraint to the model for each course, day, and hour
+            model.room_consistency_constraint = pyo.Constraint(model.days, model.courses, model.hours, rule=room_consistency_rule)
 
             # Parameters
             model.hours_per_course = pyo.Param(model.courses, initialize=courses)
@@ -79,6 +81,17 @@ class course_scheduler:
                 else:
                     # If there's only one hour in the set, then we don't enforce consecutive blocks
                     return pyo.Constraint.Skip
+
+############################################################################################################
+            def room_consistency_rule(model, d, c, h):
+                if h == model.hours.last():  # Skip the last hour since there's no next hour to compare
+                    return pyo.Constraint.Skip
+                next_h = model.hours.next(h)
+                for room in model.rooms:
+                    # If the course is scheduled in both this hour and the next, the room must be the same
+                    return model.room_assignment[d, h, c, room] * model.schedule[d, h, c] * model.schedule[d, next_h, c] <= model.room_assignment[d, next_h, c, room]
+                # If the course is not scheduled in both this hour and the next, we don't enforce room consistency
+                return pyo.Constraint.Skip
 
 
             # Teacher preferences constraint
@@ -236,4 +249,4 @@ class course_scheduler:
         ]))
         elems = []
         elems.append(table)
-        pdf.build(elems)""""
+        pdf.build(elems)"""""
