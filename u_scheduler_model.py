@@ -34,13 +34,7 @@ class course_scheduler:
             model.teacher = pyo.Param(model.teacher_indices, initialize=self.teachers_Subject)
             model.rooms = pyo.Set(initialize=self.salas.keys())
             
-            # Consecutive blocks constraint
-            model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
-            
-            # Adding the constraint to the model for each course, day, and hour
-            model.room_consistency_constraint = pyo.Constraint(model.days, model.courses, model.hours, rule=room_consistency_rule)
-
-
+         
 
             # Parameters
             model.hours_per_course = pyo.Param(model.courses, initialize=courses)
@@ -116,6 +110,12 @@ class course_scheduler:
 
             model.room_availability_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_availability_rule)
             model.room_preferences_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_preferences_rule)
+
+            # Consecutive blocks constraint
+            model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
+            
+            # Adding the constraint to the model for each course, day, and hour
+             #model.room_consistency_constraint = pyo.Constraint(model.days, model.courses, model.hours, rule=room_consistency_rule)
 
             model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
 
