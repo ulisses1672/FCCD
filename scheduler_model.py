@@ -37,12 +37,18 @@ class course_scheduler:
             # Parameters
             model.hours_per_course = pyo.Param(model.courses, initialize=courses)
             model.max_hours_per_day = self.max_hours_per_day
+
+
+            model.discPreferenciasSala = self.discPreferenciasSala
             # Max hours per week per course
             model.max_hours_per_week = {course: hours for course, hours in courses.items()}
             
             model.preferencas_dias_professores = self.preferencas_dias_professores
             # Variables
             model.schedule = pyo.Var(model.days, model.hours, model.courses , domain=pyo.Binary)
+
+
+            model.room_assignment = pyo.Var(model.days, model.hours, model.courses, model.rooms, domain=pyo.Binary)
 
             # Constraint: Only one subject can be held in the classroom at the same time
             def single_assignment_constraint(model, day, hour):
@@ -130,7 +136,7 @@ class course_scheduler:
             print("+" + "-" * 150 + "+")
             print("| {:^25} |".format("Time/Day"), end="")
             for day in model.days:
-                print(" {:^12} |".format(day), end="")
+                print(" {:^20} |".format(day), end="")
             print("\n+" + "-" * 150 + "+")
             for hour in model.hours:
                 print("| {:^25} |".format(hour), end="")
@@ -139,12 +145,20 @@ class course_scheduler:
                         if model.schedule[day, hour, course].value == 1:
                             # Lookup course abbreviation based on course name
                             course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
-                            print(" {:^10}|".format(course_abbr), end="")
+                            # Get the assigned room for the course
+                            assigned_room = None
+                            for room in model.rooms:
+                                if model.room_assignment[day, hour, course, room].value == 1:
+                                    assigned_room = room
+                                    break
+                            print(" {:^20}|".format(course_abbr), end="")
                             break
                     else:
-                        print(" {:^10} |".format("N"), end="")
+                        print(" {:^20} |".format("N"), end="")
                 print("\n+" + "-" * 150 + "+")
         print()
+
+
 
     ############################################################################################################
     """"def print_and_export_schedule(self, filename):
