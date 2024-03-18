@@ -1,4 +1,4 @@
-from scheduler_model import course_scheduler
+from u_scheduler_model import course_scheduler
 import random
 
 

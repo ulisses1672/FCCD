@@ -35,6 +35,10 @@ class course_scheduler:
             
             # Consecutive blocks constraint
             model.consecutive_blocks_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=consecutive_blocks_rule)
+            
+            # Adding the constraint to the model for each course, day, and hour
+            model.room_consistency_constraint = pyo.Constraint(model.days, model.courses, model.hours, rule=room_consistency_rule)
+
 
 
             # Parameters
@@ -80,6 +84,15 @@ class course_scheduler:
                     # If there's only one hour in the set, then we don't enforce consecutive blocks
                     return pyo.Constraint.Skip
 
+            def room_consistency_rule(model, d, c, h):
+                if h == model.hours.last():  # Skip the last hour since there's no next hour to compare
+                    return pyo.Constraint.Skip
+                next_h = model.hours.next(h)
+                for room in model.rooms:
+                    # If the course is scheduled in both this hour and the next, the room must be the same
+                    return model.room_assignment[d, h, c, room] * model.schedule[d, h, c] * model.schedule[d, next_h, c] <= model.room_assignment[d, next_h, c, room]
+                # If the course is not scheduled in both this hour and the next, we don't enforce room consistency
+                return pyo.Constraint.Skip
 
             # Teacher preferences constraint
             # Define constraint to enforce teacher availability
@@ -150,9 +163,18 @@ class course_scheduler:
     def print_schedule(self):
         # Create course abbreviations
         self._create_course_abbreviations()
-
+        
+        # Dictionary to map model index to class name
+        class_names = {
+            0: 'MIAA',
+            1: 'LEEC',
+        }
+        
         for idx, model in enumerate(self.models):
-            print(f"Schedule for Class {idx+1}:")
+            # Get class name from the dictionary based on index, default to 'Class {idx+1}' if not found
+            class_name = class_names.get(idx, f'Class {idx+1}')
+            
+            print(f"Schedule for {class_name}:")
             print("+" + "-" * 150 + "+")
             print("| {:^25} |".format("Time/Day"), end="")
             for day in model.days:
@@ -163,6 +185,7 @@ class course_scheduler:
                 for day in model.days:
                     for course in model.courses:
                         if model.schedule[day, hour, course].value == 1:
+                            # Lookup course abbreviation based on course name
                             course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
                             room_assigned = None
                             for room in model.rooms:
@@ -175,6 +198,7 @@ class course_scheduler:
                         print(" {:^22} |".format("No class"), end="")
                 print("\n+" + "-" * 150 + "+")
         print()
+
     ############################################################################################################
     """"def print_and_export_schedule(self, filename):
         # Create course abbreviations
@@ -236,4 +260,4 @@ class course_scheduler:
         ]))
         elems = []
         elems.append(table)
-        pdf.build(elems)""""
+        pdf.build(elems)"""""
