@@ -1,4 +1,4 @@
-from scheduler_model import course_scheduler
+from u_scheduler_model import course_scheduler
 import random
 
 
@@ -117,11 +117,10 @@ if __name__ == "__main__":
         'Cálculo': 4,
         'Matemática Discreta e Álgebra Linear': 4 ,
         'Teoria dos Circuitos Elétricos': 3,
-        'Sistemas Digitais': 3,
         'Programação Imperativa': 4,
     }
 
-    courses_overall = [course_units_miaa , course_units_leec]
+    courses_overall = [course_units_leec]
 
     max_hours_per_day = 8
 
@@ -142,4 +141,7 @@ if __name__ == "__main__":
     result = scheduler.solve()
     scheduler.print_schedule()  # Add this line to print the schedule
 
+    
+    
+    #scheduler.print_and_export_schedule('schedule.pdf') # Add this line to print and export the schedule to a PDF file
     
