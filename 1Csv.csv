@@ -1,0 +1,385 @@
+Course,Subjects,Professor,MaxHours
+Licenciatura em Engenharia e Gestão Industrial ,Análise Matemática,Celia Oliveira,4
+Licenciatura em Engenharia e Gestão Industrial ,Ciência e Engenharia dos Materiais,Natalia Costa,4
+Licenciatura em Engenharia e Gestão Industrial ,Processos Industriais de Fabrico I,Carla Ferreira,4
+Licenciatura em Engenharia e Gestão Industrial ,Algoritmos e Estruturas de Dados,Beatriz Rodrigues,4
+Licenciatura em Engenharia e Gestão Industrial ,Introdução à Engenharia e Gestão Industrial,Ana Oliveira,6
+Licenciatura em Engenharia e Gestão Industrial ,Projeto I,Clara Pereira,6
+Licenciatura em Engenharia e Gestão Industrial ,Álgebra Linear e Geometria Analítica,Olga Costa,6
+Licenciatura em Engenharia e Gestão Industrial ,Mecânica Aplicada,Matilde Carvalho,6
+Licenciatura em Engenharia e Gestão Industrial ,Programação,Carla Sousa,3
+Licenciatura em Engenharia e Gestão Industrial ,Desenho de Construção Mecânica,Celia Santos,3
+Licenciatura em Engenharia e Gestão Industrial ,Fundamentos de Eletrotecnia,Silvia Fernades,3
+Licenciatura em Engenharia e Gestão Industrial ,Projeto I,Clara Varzim,5
+Licenciatura em Engenharia e Gestão Industrial ,Mecânica dos Materiais em Engenharia,Maria Rodrigues,5
+Licenciatura em Engenharia e Gestão Industrial ,Teoria de Sistemas de Controlo,Clara Oliveira,5
+Licenciatura em Engenharia e Gestão Industrial ,Processos Industriais de Fabrico II,Carla Martins,5
+Licenciatura em Engenharia e Gestão Industrial ,Armazenamento e Acesso a Dados,Bruna Martins,5
+Licenciatura em Engenharia e Gestão Industrial ,Estatística,Marisa Oliveira,4
+Licenciatura em Engenharia e Gestão Industrial ,Projeto II,Matilde Silva,4
+Licenciatura em Engenharia e Gestão Industrial ,Termodinâmica e Mecânica dos Fluídos,Matilde Ribeiro,4
+Licenciatura em Engenharia e Gestão Industrial ,Análise de Custos Industriais,Maria Oliveira,4
+Licenciatura em Engenharia e Gestão Industrial ,Automação e Robótica Industrial,Marisa Martins,6
+Licenciatura em Engenharia e Gestão Industrial ,Investigação Operacional,Beatriz Martins,6
+Licenciatura em Engenharia e Gestão Industrial ,Manutenção Industrial,Matilde Sousa,6
+Licenciatura em Engenharia e Gestão Industrial ,Projeto II,Silvia Ferreira,6
+Licenciatura em Engenharia e Gestão Industrial ,Projetos de investimento,Sofia Sousa,3
+Licenciatura em Engenharia e Gestão Industrial ,Gestão da Qualidade e Segurança,Bruna Oliveira,3
+Licenciatura em Engenharia e Gestão Industrial ,Tecnologias industriais avançadas,Ana Varzim,3
+Licenciatura em Engenharia e Gestão Industrial ,Gestão de operações,Celia Fernades,5
+Licenciatura em Engenharia e Gestão Industrial ,Logística,Silvia Varzim,5
+Licenciatura em Engenharia e Gestão Industrial ,Projeto III,Maria Ferreira,5
+Licenciatura em Engenharia e Gestão Industrial ,Estágio,Maria Santos,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Metodologia do Design Audiovisual I,Marisa Santos,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Fotografia Digital,Maria Martins,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório Digital 2D I,Carla Rodrigues,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Desenho de Representação,Olga Santos,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,História da Cultura Audiovisual,Beatriz Sousa,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Metodologia do Design Audiovisual II,Celia Costa,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Vídeo Digital,Ana Fernades,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório Digital 2D II,Sofia Martins,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Desenho e Figura Humana,Ana Fernades,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Escrita criativa para Audiovisuais,Celia Martins,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Projeto de Design Audiovisual I,Bruna Ferreira,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Design de Comunicação I,Marisa Santos,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório Digital 3D I,Silvia Ferreira,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Produção Fotográfica,Sofia Santos,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Estudo e Desenvolvimento de Personagens,Celia Pereira,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Projeto de Design Audiovisual II,Clara Fernades,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Design de Comunicação II,Matilde Sousa,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório Digital 3D II,Matilde Santos,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Fundamentos da Ilustração,Maria Costa,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Guião e Storyboard,Olga Pereira,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Projeto de Design Audiovisual III,Matilde Martins,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Design Digital I,Matilde Costa,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Motion Graphics,Maria Martins,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório de Som,Beatriz Carvalho,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Sociologia da Comunicação (optativa),Silvia Fernades,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Direito na Prática do Design (optativa),Sofia Costa,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Marketing e Comunicação de Produto (optativa),Silvia Santos,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Anteprojeto de Design Audiovisual,Carla Oliveira,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Design Digital II,Sofia Santos,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Pós-produção Audiovisual,Sofia Sousa,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Produção Audiovisual,Marisa Santos,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Semiótica Audiovisual,Bruna Ferreira,5
+Licenciatura em Gestão de Empresas ,Fundamentos de Gestão,Sofia Santos,5
+Licenciatura em Gestão de Empresas ,Contabilidade e Relato Financeiro I,Maria Costa,7
+Licenciatura em Gestão de Empresas ,Microeconomia,Silvia Carvalho,4
+Licenciatura em Gestão de Empresas ,Introdução ao Direito,Bruna Oliveira,4
+Licenciatura em Gestão de Empresas ,Matemática,Clara Varzim,4
+Licenciatura em Gestão de Empresas ,Macroeconomia,Carla Fernades,6
+Licenciatura em Gestão de Empresas ,Contabilidade e Relato Financeiro II,Sofia Costa,6
+Licenciatura em Gestão de Empresas ,Cálculo e Instrumentos Financeiros,Bruna Oliveira,6
+Licenciatura em Gestão de Empresas ,Direito Empresarial,Natalia Ferreira,6
+Licenciatura em Gestão de Empresas ,Estatística,Celia Rodrigues,3
+Licenciatura em Gestão de Empresas ,Avaliação de Projetos de Investimento,Olga Rodrigues,3
+Licenciatura em Gestão de Empresas ,Contabilidade Analítica,Celia Martins,3
+Licenciatura em Gestão de Empresas ,Marketing,Beatriz Sousa,5
+Licenciatura em Gestão de Empresas ,Gestão de Negócios Internacionais,Bruna Sousa,5
+Licenciatura em Gestão de Empresas ,Gestão da Produção e Operações,Clara Costa,5
+Licenciatura em Gestão de Empresas ,Gestão Financeira,Matilde Pereira,5
+Licenciatura em Gestão de Empresas ,Estratégia Empresarial,Ana Martins,5
+Licenciatura em Gestão de Empresas ,Tecnologias de Informação para a Gestão,Beatriz Rodrigues,4
+Licenciatura em Gestão de Empresas ,Gestão Comercial e Vendas,Marisa Carvalho,4
+Licenciatura em Gestão de Empresas ,Fiscalidade Empresarial,Bruna Ferreira,4
+Licenciatura em Gestão de Empresas ,Opção 1,Carla Fernades,4
+Licenciatura em Gestão de Empresas ,Opção 2,Silvia Varzim,6
+Licenciatura em Gestão de Empresas ,Opção 3,Beatriz Varzim,6
+Licenciatura em Gestão de Empresas ,Opção 4,Beatriz Ribeiro,6
+Licenciatura em Gestão de Empresas ,Opção 5,Maria Silva,6
+Licenciatura em Gestão de Empresas ,Comportamento Organizacional,Olga Costa,3
+Licenciatura em Gestão de Empresas ,Gestão da Inovação e Empreendedorismo,Bruna Santos,3
+Licenciatura em Gestão de Empresas ,Ética e Responsabilidade Social,Ana Ferreira,3
+Licenciatura em Gestão de Empresas ,Projeto Final de Gestão,Maria Fernades,5
+Licenciatura em Solicitadoria ,Introdução ao Direito,Bruna Rodrigues,5
+Licenciatura em Solicitadoria ,Direito Constitucional,Beatriz Martins,5
+Licenciatura em Solicitadoria ,Noções de Contabilidade e Relato Financeiro,Natalia Fernades,5
+Licenciatura em Solicitadoria ,Direito da União Europeia,Celia Carvalho,5
+Licenciatura em Solicitadoria ,Economia Política,Natalia Santos,4
+Licenciatura em Solicitadoria ,Direito e Processo Penal e das Contraordenações,Carla Fernades,4
+Licenciatura em Solicitadoria ,Direito Fiscal I,Dinis Varzim,4
+Licenciatura em Solicitadoria ,Direito Comercial,Joao Costa,6
+Licenciatura em Solicitadoria ,Direito Administrativo I,Mateus Santos,6
+Licenciatura em Solicitadoria ,Teoria Geral de Direito Civil,Tiago Pereira,6
+Licenciatura em Solicitadoria ,Direito Processual Civil I,Rodrigo Rodrigues,6
+Licenciatura em Solicitadoria ,Direito das Obrigações,Martim Pereira,3
+Licenciatura em Solicitadoria ,Direito Administrativo II,Ulisses Costa,3
+Licenciatura em Solicitadoria ,Direito Fiscal II,Rodrigo Oliveira,3
+Licenciatura em Solicitadoria ,Direito das Sociedades,Rafael Oliveira,5
+Licenciatura em Solicitadoria ,Direito Processual Civil II,Mateus Sousa,5
+Licenciatura em Solicitadoria ,Direito dos Contratos e do Consumo,Rodrigo Ribeiro,5
+Licenciatura em Solicitadoria ,Direito e Processo do Trabalho,Francisco Martins,5
+Licenciatura em Solicitadoria ,Direito da Família,Diogo Rodrigues,5
+Licenciatura em Solicitadoria ,Direitos Reais,Mateus Oliveira,4
+Licenciatura em Solicitadoria ,Processo de Inventário,Rafael Pereira,4
+Licenciatura em Solicitadoria ,Direito das Sucessões,Mateus Carvalho,4
+Licenciatura em Solicitadoria ,Direito do Notariado,Martim Costa,4
+Licenciatura em Solicitadoria ,Processo Executivo,Joao Pereira,6
+Licenciatura em Solicitadoria ,Opção,Dinis Fernades,6
+Licenciatura em Solicitadoria ,Fiscalidade,Santiago Rodrigues,6
+Licenciatura em Solicitadoria ,Direito dos Registos,Martim Martins,6
+Licenciatura em Solicitadoria ,Direito do Urbanismo,Ulisses Carvalho,3
+Licenciatura em Solicitadoria ,Resolução Alternativa de Litígios,Tiago Rodrigues,3
+Licenciatura em Solicitadoria ,Simulação Jurídica,Rodrigo Silva,3
+Mestrado em Inteligência Artificial Aplicada ,Computational Tools for Data Science,Afonso Fernades,5
+Mestrado em Inteligência Artificial Aplicada ,Mathematical Foundations for Artificial Intelligence,Afonso Oliveira,5
+Mestrado em Inteligência Artificial Aplicada ,Fundamentals of Artificial Intelligence,Dinis Ribeiro,5
+Mestrado em Inteligência Artificial Aplicada ,Statistical Models for AI,Francisco Martins,5
+Mestrado em Inteligência Artificial Aplicada ,Machine Learning Algorithms,Francisco Santos,5
+Mestrado em Inteligência Artificial Aplicada ,Ethics of AI,Diogo Pereira,4
+Mestrado em Inteligência Artificial Aplicada ,Deep Learning for Computer Vision,Joao Santos,4
+Mestrado em Inteligência Artificial Aplicada ,High Performance Computing,Afonso Rodrigues,4
+Mestrado em Inteligência Artificial Aplicada ,Embedded AI Systems,Santiago Varzim,6
+Mestrado em Inteligência Artificial Aplicada ,Natural Language Processing,Joao Oliveira,6
+Mestrado em Inteligência Artificial Aplicada ,Research Methods for AI,Joao Costa,6
+Mestrado em Inteligência Artificial Aplicada ,Artificial Intelligence on Cyber Security,Francisco Martins,6
+Mestrado em Inteligência Artificial Aplicada ,Collaborative Robots & Intelligent AGVs,Francisco Costa,3
+Mestrado em Inteligência Artificial Aplicada ,Affective Computing,Rafael Varzim,3
+Mestrado em Inteligência Artificial Aplicada ,Dissertation Internship Project Plan,Santiago Oliveira,3
+Mestrado em Inteligência Artificial Aplicada ,Dissertation  Internship  Project,Mateus Ferreira,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Cálculo,Joao Pereira,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Matemática Discreta e Álgebra Linear,Ulisses Ribeiro,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Teoria dos Circuitos Elétricos,Rodrigo Sousa,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Sistemas Digitais,Ulisses Silva,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Programação Imperativa,Ulisses Martins,4
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Teoria da Electricidade,Diogo Rodrigues,4
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Estrutura de Dados Avançadas,Rafael Ribeiro,4
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Fundamentos de Física,Francisco Silva,4
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Eletrónica I,Francisco Ribeiro,6
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Eletrotecnia,Joao Ribeiro,6
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Projeto de Sistemas Digitais,Joao Pereira,6
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Teoria de Sistemas e Controlo,Santiago Varzim,6
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Arquitetura de Sistemas Computacionais,Joao Silva,3
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Programação Orientada a Objetos,Santiago Costa,3
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Eletrónica II,Rodrigo Martins,3
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Armazenamento e Acesso a Dados,Mateus Oliveira,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Estatística,Martim Silva,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Microcontroladores,Rodrigo Rodrigues,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Máquinas Elétricas,Ulisses Rodrigues,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Automação,Francisco Varzim,5
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Processamento de Sinal,Afonso Varzim,4
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Instrumentação e Medidas,Mateus Fernades,4
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Robótica,Mateus Ferreira,4
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Instalações Eléctricas,Ulisses Silva,6
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Redes de Computadores e Sistemas Distribuídos,Diogo Ribeiro,6
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Sistemas Energéticos e Sustentabilidade,Ulisses Ferreira,6
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Electrónica de Potência,Diogo Pereira,6
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Gestão de Projetos de Engenharia,Dinis Pereira,3
+Licenciatura em Engenharia Eletrotécnica e de Computadores,Projecto/Estágio,Martim Fernades,3
+Licenciatura em Finanças ,Microeconomia,Francisco Varzim,3
+Licenciatura em Finanças ,Matemática,Ulisses Costa,5
+Licenciatura em Finanças ,Fundamentos de Gestão,Ulisses Fernades,5
+Licenciatura em Finanças ,Contabilidade Financeira I,Rafael Ferreira,5
+Licenciatura em Finanças ,Noções Fundamentais de Direito,Rodrigo Rodrigues,5
+Licenciatura em Finanças ,Macroeconomia,Rodrigo Ferreira,5
+Licenciatura em Finanças ,Estatística,Santiago Sousa,4
+Licenciatura em Finanças ,Contabilidade Financeira II,Tiago Silva,4
+Licenciatura em Finanças ,Cálculo e Instrumentos Financeiros,Francisco Varzim,4
+Licenciatura em Finanças ,Direito Empresarial e Financeiro,Francisco Oliveira,4
+Licenciatura em Finanças ,Finanças Públicas I,Diogo Martins,6
+Licenciatura em Finanças ,Finanças Empresariais I,Dinis Varzim,6
+Licenciatura em Finanças ,Fiscalidade Portuguesa,Rodrigo Martins,6
+Licenciatura em Finanças ,Gestão Financeira,Santiago Sousa,6
+Licenciatura em Finanças ,Opção 1,Joao Sousa,3
+Licenciatura em Finanças ,Contabilidade Analítica,Rafael Costa,3
+Licenciatura em Finanças ,Finanças Empresariais II,Tiago Oliveira,3
+Licenciatura em Finanças ,Finanças Públicas II,Ulisses Costa,5
+Licenciatura em Finanças ,Administração Pública,Rodrigo Fernades,5
+Licenciatura em Finanças ,Opção 2,Afonso Fernades,5
+Licenciatura em Finanças ,Mercados e Investimentos Financeiros,Santiago Ferreira,5
+Licenciatura em Finanças ,Contabilidade Pública,Martim Santos,5
+Licenciatura em Finanças ,Auditoria Financeira,Dinis Pereira,4
+Licenciatura em Finanças ,Derivados e Gestão do Risco,Francisco Pereira,4
+Licenciatura em Finanças ,Opção 3,Rafael Costa,4
+Licenciatura em Finanças ,Gestão e Avaliação do Desempenho de Carteiras,Ulisses Ferreira,6
+Licenciatura em Finanças ,Opção 4,Martim Silva,6
+Licenciatura em Finanças ,Opção 5,Afonso Oliveira,6
+Licenciatura em Finanças ,Estágio/ Projecto em Simulação Empresarial/ Projecto Profissional,Francisco Silva,6
+Licenciatura em Design Industrial ,Desenho I,Celia Oliveira,3
+Licenciatura em Design Industrial ,Metodologia de Trabalho do Designer,Natalia Costa,3
+Licenciatura em Design Industrial ,História do Design Industrial,Carla Ferreira,3
+Licenciatura em Design Industrial ,Laboratório de Materiais,Beatriz Rodrigues,5
+Licenciatura em Design Industrial ,Geometria e Projeção,Ana Oliveira,5
+Licenciatura em Design Industrial ,Desenho II,Clara Pereira,5
+Licenciatura em Design Industrial ,Desenho Técnico Computacional,Olga Costa,5
+Licenciatura em Design Industrial ,Tecnologias e Processos de Fabrico,Matilde Carvalho,5
+Licenciatura em Design Industrial ,Cultura do Design Industrial,Carla Sousa,4
+Licenciatura em Design Industrial ,Projeto de Design Industrial I,Celia Santos,4
+Licenciatura em Design Industrial ,Desenho de Representação e Comunicação do Produto,Silvia Fernades,4
+Licenciatura em Design Industrial ,Laboratório de Modelação 3D I,Clara Varzim,4
+Licenciatura em Design Industrial ,Resistência dos Materiais I,Maria Rodrigues,6
+Licenciatura em Design Industrial ,Maquetização e Técnicas de Modelação,Clara Oliveira,6
+Licenciatura em Design Industrial ,Projeto de Design Industrial II,Carla Martins,6
+Licenciatura em Design Industrial ,Sketching e Rendering Manual,Bruna Martins,6
+Licenciatura em Design Industrial ,Laboratório de Modelação 3D II,Marisa Oliveira,3
+Licenciatura em Design Industrial ,Ergonomia e Antropometria,Matilde Silva,3
+Licenciatura em Design Industrial ,Resistência dos Materiais II,Matilde Ribeiro,3
+Licenciatura em Design Industrial ,Projeto de Design Industrial III,Maria Oliveira,5
+Licenciatura em Design Industrial ,Modelos e Protótipos,Marisa Martins,5
+Licenciatura em Design Industrial ,Seleção de Materiais,Beatriz Martins,5
+Licenciatura em Design Industrial ,Laboratório Digital I,Matilde Sousa,5
+Licenciatura em Design Industrial ,Eco-Design e Desenvolvimento Sustentável,Silvia Ferreira,5
+Licenciatura em Design Industrial ,Marketing e Comunicação do Produto,Sofia Sousa,4
+Licenciatura em Design Industrial ,Projeto de Design Industrial IV,Bruna Oliveira,4
+Licenciatura em Design Industrial ,Empreendedorismo e Gestão do Design,Ana Varzim,4
+Licenciatura em Design Industrial ,Design de Interação,Celia Fernades,6
+Licenciatura em Design Industrial ,Design e Qualidade do Produto,Silvia Varzim,6
+Licenciatura em Design Industrial ,Laboratório Digital II,Maria Ferreira,6
+Licenciatura em Design Industrial ,Projeto de Design Industrial V,Maria Santos,6
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Elementos Matemáticos para a Computação Gráfica,Marisa Santos,3
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Programação Orientada a Objetos.,Maria Martins,3
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Programação Imperativa,Carla Rodrigues,3
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Arte Digital 2D para Videojogos,Olga Santos,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Conceção e Especificação de Videojogos,Beatriz Sousa,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Arquitetura de Dispositivos de Suporte a Jogos,Celia Costa,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Matemática Computacional,Ana Fernades,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Probabilidades e Estatística,Sofia Martins,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Estrutura de Dados Avançadas,Ana Fernades,4
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Técnicas de Desenvolvimento de Videojogos,Celia Martins,4
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Sistemas de Armazenamento de Dados,Bruna Ferreira,4
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Programação e Desenvolvimento Web,Marisa Santos,4
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Introdução à Visão por Computador.,Silvia Ferreira,6
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Desenvolvimento de Jogos para Plataformas Móveis,Sofia Santos,6
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Física Aplicada aos Videojogos,Celia Pereira,6
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Programação 3D,Clara Fernades,6
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Tecnologias de Animação 3D para Videojogos,Matilde Sousa,3
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Desenvolvimento de Jogos Aplicado,Matilde Santos,3
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Inteligência Artificial Aplicada a Jogos,Maria Costa,3
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Programação para Videojogos em Rede,Olga Pereira,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Técnicas de Computação Gráfica para Efeitos Visuais,Matilde Martins,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Projeto Aplicado,Matilde Costa,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Tecnologias Emergentes em Videojogos,Maria Martins,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Técnicas Avançadas de Programação 3D,Beatriz Carvalho,5
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Empreendedorismo e Criação de Empresas,Silvia Fernades,4
+Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais ,Projeto/Estágio,Sofia Costa,4
+Curso Técnico Superior Profissional em Aplicações Móveis ,Inglês Técnico,Silvia Santos,4
+Curso Técnico Superior Profissional em Aplicações Móveis ,Algoritmos e estruturas de dados,Carla Oliveira,6
+Curso Técnico Superior Profissional em Aplicações Móveis ,Elementos matemáticos para a programação,Sofia Santos,6
+Curso Técnico Superior Profissional em Aplicações Móveis ,Linguagens de programação,Sofia Sousa,6
+Curso Técnico Superior Profissional em Aplicações Móveis ,Análise e projecto de sistemas,Marisa Santos,6
+Curso Técnico Superior Profissional em Aplicações Móveis ,Projeto de iniciação à programação,Bruna Ferreira,3
+Curso Técnico Superior Profissional em Aplicações Móveis ,Edição multimédia-,Sofia Santos,3
+Curso Técnico Superior Profissional em Aplicações Móveis ,Arquitectura de dispositivos móveis,Maria Costa,3
+Curso Técnico Superior Profissional em Aplicações Móveis ,Estatistica aplicada à programação,Silvia Carvalho,5
+Curso Técnico Superior Profissional em Aplicações Móveis ,Computação móvel I,Bruna Oliveira,5
+Curso Técnico Superior Profissional em Aplicações Móveis ,Armazenamento e Acesso a Dados,Clara Varzim,5
+Curso Técnico Superior Profissional em Aplicações Móveis ,Projeto de computacão móvel,Carla Fernades,5
+Curso Técnico Superior Profissional em Aplicações Móveis ,Redes úbiquas e de proximidade,Sofia Costa,5
+Curso Técnico Superior Profissional em Aplicações Móveis ,Introdução à computação gráfica,Bruna Oliveira,4
+Curso Técnico Superior Profissional em Aplicações Móveis ,Computação móvel ll,Natalia Ferreira,4
+Curso Técnico Superior Profissional em Aplicações Móveis ,Interação com dispositivos móveis,Celia Rodrigues,4
+Curso Técnico Superior Profissional em Aplicações Móveis ,Programação web aplicada a dispositivos móveis,Olga Rodrigues,4
+Curso Técnico Superior Profissional em Aplicações Móveis ,Projeto de computação móvel avançada,Celia Martins,6
+Curso Técnico Superior Profissional em Aplicações Móveis ,Estágio,Beatriz Sousa,6
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Programação,Bruna Sousa,6
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Teoria de circuitos elétricos,Clara Costa,6
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Técnicas de Medida e Calibração,Matilde Pereira,3
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Desenho de esquemas e quadros elétricos,Ana Martins,3
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Certificação e Qualidade em Eletrónica  Automação e Comando,Beatriz Rodrigues,3
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Inglês Técnico,Marisa Carvalho,5
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Projecto I,Bruna Ferreira,5
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Sistemas de Pneumáticos e Hidráulicos,Carla Fernades,5
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Automação,Silvia Varzim,5
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Electrotecnia,Beatriz Varzim,5
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Sistemas Digitais e Microcontroladores,Beatriz Ribeiro,4
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Matemática aplicada à Electrónica,Maria Silva,4
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Projecto II,Olga Costa,4
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Visão por Computador,Bruna Santos,6
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Robótica industrial,Ana Ferreira,6
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Máquinas Elétricas,Maria Fernades,6
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Laboratórios de automação,Bruna Rodrigues,6
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Redes e Protocolos de comunicação,Beatriz Martins,3
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Projecto III,Natalia Fernades,3
+Curso Técnico Superior Profissional em Eletrónica  Automação e Comando ,Estágio,Celia Carvalho,3
+Mestrado em Cibersegurança Aplicada,Desenvolvimento de Software Seguro,Natalia Santos,5
+Mestrado em Cibersegurança Aplicada,Segurança nas Redes e Administração de Sistemas,Carla Fernades,5
+Mestrado em Cibersegurança Aplicada,Inteligência Artificial Aplicada à Cibersegurança,Dinis Varzim,5
+Mestrado em Cibersegurança Aplicada,Segurança da Informação em Organizações,Joao Costa,5
+Mestrado em Cibersegurança Aplicada,Criptografia Aplicada à Cibersegurança,Mateus Santos,5
+Mestrado em Cibersegurança Aplicada,Laboratório de Testes de Intrusão,Tiago Pereira,4
+Mestrado em Cibersegurança Aplicada,Laboratório de Análise Forense,Rodrigo Rodrigues,4
+Mestrado em Cibersegurança Aplicada,Direito e Ética na Cibersegurança - Opção 1,Martim Pereira,4
+Mestrado em Cibersegurança Aplicada,Auditoria Informática - Opção 2,Ulisses Costa,4
+Mestrado em Cibersegurança Aplicada,Estágio/Trabalho de Projeto,Rodrigo Oliveira,6
+Mestrado em Engenharia e Gestão Industrial ,Simulação industrial,Rafael Oliveira,6
+Mestrado em Engenharia e Gestão Industrial ,Fabrico assistido por computador,Mateus Sousa,6
+Mestrado em Engenharia e Gestão Industrial ,Projeto I - Gestão de operações,Rodrigo Ribeiro,6
+Mestrado em Engenharia e Gestão Industrial ,Gestão financeira,Francisco Martins,3
+Mestrado em Engenharia e Gestão Industrial ,Redes industriais e sistemas sensoriais,Diogo Rodrigues,3
+Mestrado em Engenharia e Gestão Industrial ,Complementos de estatística e investigação operacional,Mateus Oliveira,3
+Mestrado em Engenharia e Gestão Industrial ,Projeto generativo,Rafael Pereira,5
+Mestrado em Engenharia e Gestão Industrial ,Métodos de investigação em engenharia,Mateus Carvalho,5
+Mestrado em Engenharia e Gestão Industrial ,Projeto II - Qualidade e controlo estatístico de processos,Martim Costa,5
+Mestrado em Engenharia e Gestão Industrial ,Opção I,Joao Pereira,5
+Mestrado em Engenharia e Gestão Industrial ,Liderança e sustentabilidade industrial,Dinis Fernades,5
+Mestrado em Engenharia e Gestão Industrial ,Inteligência artificial aplicada à indústria,Santiago Rodrigues,4
+Mestrado em Engenharia e Gestão Industrial ,Modelação e controlo de sistemas dinâmicos,Martim Martins,4
+Mestrado em Engenharia e Gestão Industrial ,Plano de Dissertação/Projeto/Estágio,Ulisses Carvalho,4
+Mestrado em Engenharia e Gestão Industrial ,Opção II,Tiago Rodrigues,6
+Mestrado em Engenharia e Gestão Industrial ,Dissertação/Projeto/Estágio,Rodrigo Silva,6
+Licenciatura em Contabilidade ,Contabilidade Financeira I,Afonso Fernades,6
+Licenciatura em Contabilidade ,Métodos Quantitativos,Afonso Oliveira,6
+Licenciatura em Contabilidade ,Noções de Direito,Dinis Ribeiro,3
+Licenciatura em Contabilidade ,Fundamentos de Gestão,Francisco Martins,3
+Licenciatura em Contabilidade ,Direito das Sociedades Comerciais,Francisco Santos,3
+Licenciatura em Contabilidade ,Cálculo Financeiro,Diogo Pereira,5
+Licenciatura em Contabilidade ,Economia,Joao Santos,5
+Licenciatura em Contabilidade ,Direito Fiscal,Afonso Rodrigues,5
+Licenciatura em Contabilidade ,Contabilidade Financeira II,Santiago Varzim,5
+Licenciatura em Contabilidade ,Fiscalidade I,Joao Oliveira,5
+Licenciatura em Contabilidade ,Práticas em Sistemas de Informação Contabilístico-Fiscais I,Joao Costa,4
+Licenciatura em Contabilidade ,Contabilidade Analítica e de Gestão I,Francisco Martins,4
+Licenciatura em Contabilidade ,Contabilidade das Sociedades,Francisco Costa,4
+Licenciatura em Contabilidade ,Fiscalidade II,Rafael Varzim,4
+Licenciatura em Contabilidade ,Direito do Trabalho e Segurança Social,Santiago Oliveira,6
+Licenciatura em Contabilidade ,Práticas em Sistemas de Informação Contabilístico-Fiscais II,Mateus Ferreira,6
+Licenciatura em Contabilidade ,Contabilidade Analítica e de Gestão II,Joao Pereira,6
+Licenciatura em Contabilidade ,Contabilidade dos Grupos e Reestruturações Empresariais,Ulisses Ribeiro,6
+Licenciatura em Contabilidade ,Gestão Financeira,Rodrigo Sousa,3
+Licenciatura em Contabilidade ,Fiscalidade III,Ulisses Silva,3
+Licenciatura em Contabilidade ,Práticas em Sistemas de Informação Contabilístico-Fiscais III,Ulisses Martins,3
+Licenciatura em Contabilidade ,Relato Financeiro,Diogo Rodrigues,5
+Licenciatura em Contabilidade ,Opção 1,Rafael Ribeiro,5
+Licenciatura em Contabilidade ,Ética e Deontologia Profissional,Francisco Silva,5
+Licenciatura em Contabilidade ,Análise de Projetos de Investimento,Francisco Ribeiro,5
+Licenciatura em Contabilidade ,Auditoria Financeira,Joao Ribeiro,5
+Licenciatura em Contabilidade ,Contabilidade das Instituições Financeiras e Seguradora,Joao Pereira,4
+Licenciatura em Contabilidade ,Opção 2,Santiago Varzim,4
+Licenciatura em Contabilidade ,Contabilidade das Administrações Públicas,Joao Silva,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Metodologia do Design Audiovisual I,Santiago Costa,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Fotografia Digital,Rodrigo Martins,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório Digital 2D I,Mateus Oliveira,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Desenho de Representação,Martim Silva,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,História da Cultura Audiovisual,Rodrigo Rodrigues,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Metodologia do Design Audiovisual II,Ulisses Rodrigues,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Vídeo Digital,Francisco Varzim,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório Digital 2D II,Afonso Varzim,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Desenho e Figura Humana,Mateus Fernades,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Escrita criativa para Audiovisuais,Mateus Ferreira,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Projeto de Design Audiovisual I,Ulisses Silva,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Design de Comunicação I,Diogo Ribeiro,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório Digital 3D I,Ulisses Ferreira,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Produção Fotográfica,Diogo Pereira,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Estudo e Desenvolvimento de Personagens,Dinis Pereira,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Projeto de Design Audiovisual II,Martim Fernades,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Design de Comunicação II,Francisco Varzim,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório Digital 3D II,Ulisses Costa,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Fundamentos da Ilustração,Ulisses Fernades,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Guião e Storyboard,Rafael Ferreira,6
+Licenciatura em Design Audiovisual / Audiovisual Design ,Projeto de Design Audiovisual III,Rodrigo Rodrigues,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Design Digital I,Rodrigo Ferreira,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Motion Graphics,Santiago Sousa,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Laboratório de Som,Tiago Silva,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Sociologia da Comunicação (optativa),Francisco Varzim,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Direito na Prática do Design (optativa),Francisco Oliveira,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Marketing e Comunicação de Produto (optativa),Diogo Martins,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Anteprojeto de Design Audiovisual,Dinis Varzim,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Design Digital II,Rodrigo Martins,4
+Licenciatura em Design Audiovisual / Audiovisual Design ,Pós-produção Audiovisual,Santiago Sousa,3
+Licenciatura em Design Audiovisual / Audiovisual Design ,Produção Audiovisual,Joao Sousa,5
+Licenciatura em Design Audiovisual / Audiovisual Design ,Semiótica Audiovisual,Rafael Costa,2
+,,,
+,,,
+,,,
+,,,
+,,,
