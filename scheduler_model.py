@@ -25,8 +25,11 @@ class course_scheduler:
         for courses in self.courses_overall:
             model = pyo.ConcreteModel()
             # Sets
-            model.days = pyo.Set(initialize=self.days)
-            model.hours = pyo.Set(initialize=self.hours)
+            model.days = pyo.Set(initialize=self.days, ordered = True)
+            # Define continuous hour set starting from 9:00 AM
+            model.hours = pyo.Set(initialize=self.hours , ordered = True)
+
+            
             model.courses = pyo.Set(initialize=courses.keys())
 
             # Parameters
@@ -47,8 +50,9 @@ class course_scheduler:
             # Variables
             model.schedule = pyo.Var(model.days, model.hours, model.courses , domain=pyo.Binary)
 
-
             model.room_assignment = pyo.Var(model.days, model.hours, model.courses, model.rooms, domain=pyo.Binary)
+
+
 
             # Constraint: Only one subject can be held in the classroom at the same time
             def single_assignment_constraint(model, day, hour):
@@ -78,6 +82,18 @@ class course_scheduler:
                 return pyo.Constraint.Skip
             
             model.teacher_availability_constraint = pyo.Constraint(model.courses, model.days, rule=teacher_availability_constraint)
+
+            # Constraint: Only one room can be assigned to a course at a given time
+            # Constraint: Only one room can be assigned to a course at a given time respecting preferences
+            def room_assignment_constraint(model, day, hour, course):
+                preferred_rooms = model.discPreferenciasSala[course]  # Get preferred rooms for the course
+                if preferred_rooms:  # If there are preferred rooms
+                    return sum(model.room_assignment[day, hour, course, room] for room in preferred_rooms) == 1
+                else:  # If there are no preferred rooms, allow assignment to any room
+                    return sum(model.room_assignment[day, hour, course, room] for room in model.rooms) == 1
+
+            model.room_assignment_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_assignment_constraint)
+
 
 
             # Objective
@@ -151,7 +167,8 @@ class course_scheduler:
                                 if model.room_assignment[day, hour, course, room].value == 1:
                                     assigned_room = room
                                     break
-                            print(" {:^20}|".format(course_abbr), end="")
+                            print(" {:^10} ({:^5})|".format(course_abbr,assigned_room), end="")
+
                             break
                     else:
                         print(" {:^20} |".format("N"), end="")
