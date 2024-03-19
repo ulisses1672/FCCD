@@ -80,7 +80,7 @@ if __name__ == "__main__":
                         'Maria Rodrigues': ['Monday', 'Tuesday', 'Wednesday', 'Friday'] , 
                         'Matilde Carvalho':['Monday', 'Tuesday', 'Friday'] ,  
                         'Clara Oliveira': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] ,  
-                        'Clara Varzim': ['Tuesday', 'Wednesday', 'Thursday'] , 
+                        'Clara Varzim': [ 'Wednesday', 'Thursday'] , 
     }
 
     professoresAvaiability = {
@@ -115,13 +115,13 @@ if __name__ == "__main__":
 
     course_units_leec = {
         'Cálculo': 4,
-        'Matemática Discreta e Álgebra Linear': 4 ,
+        'Matemática Discreta e Álgebra Linear': 2 ,
         'Teoria dos Circuitos Elétricos': 3,
-        'Sistemas Digitais': 3,
+        'Sistemas Digitais': 5,
         'Programação Imperativa': 4,
     }
 
-    courses_overall = [course_units_miaa , course_units_leec]
+    courses_overall = [course_units_leec]
 
     max_hours_per_day = 8
 
