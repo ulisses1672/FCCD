@@ -35,17 +35,17 @@ if __name__ == "__main__":
     max_hours_per_day = 6
 
 
-    salas = {'salaA': 0,'salaB': 0, 'salaC': 0,'salaD': 0,'salaE': 0,'ginasio': 0,'lab': 0,'salaArtes': 0}
+    salas = {'salaA': 0,'salaB': 0, 'salaC': 0,'salaD': 0,'salaE': 0,'ginasio': 0,'lab': 0,'salaArtes': 0,'Temp Room':0}
 
     discPreferenciasSala = {"Computational Tools for Data Science" : ["salaA", "salaB"] , 
-                        'Mathematical Foundations for Artificial Intelligence': [],
-                        'Fundamentals of Artificial Intelligence': [],
-                        'Statistical Models for AI': [],
+                        'Mathematical Foundations for Artificial Intelligence': ["salaA","salaC", "salaD"],
+                        'Fundamentals of Artificial Intelligence': ["salaA","salaC", "salaD"],
+                        'Statistical Models for AI': ["salaA", "salaC", "salaE"],
                         'Machine Learning Algorithms': ["salaE"],
                         'Cálculo': ["salaD", "salaC", "salaD"],
                         'Matemática Discreta e Álgebra Linear': ["salaB"],
-                        'Teoria dos Circuitos Elétricos': [],
-                        'Sistemas Digitais': [],
+                        'Teoria dos Circuitos Elétricos': ["salaC", "salaE"],
+                        'Sistemas Digitais': ["salaC", "salaE"],
                         'Programação Imperativa': ["salaA", "lab"],
         }
 
@@ -117,11 +117,11 @@ if __name__ == "__main__":
         'Cálculo': 4,
         'Matemática Discreta e Álgebra Linear': 2 ,
         'Teoria dos Circuitos Elétricos': 3,
-        'Sistemas Digitais': 5,
+        'Sistemas Digitais': 2,
         'Programação Imperativa': 4,
     }
 
-    courses_overall = [course_units_leec]
+    courses_overall = [course_units_miaa,course_units_leec]
 
     max_hours_per_day = 8
 
@@ -140,6 +140,7 @@ if __name__ == "__main__":
     #scheduler = course_scheduler(days, hours, course_units_miaa, course_units_leec, max_hours_per_day)
     scheduler.create_model()
     result = scheduler.solve()
+
     scheduler.print_schedule()  # Add this line to print the schedule
 
     

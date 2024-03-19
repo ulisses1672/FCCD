@@ -34,7 +34,7 @@ class course_scheduler:
 
             # Parameters
             model.teacher_indices = pyo.Set(initialize=self.teachers_Subject.keys())
-            model.teacher = pyo.Param(model.teacher_indices, initialize=self.teachers_Subject)
+            model.teacher = pyo.Param(model.teacher_indices, initialize=self.teachers_Subject, within=pyo.Any)
             model.rooms = pyo.Set(initialize=self.salas.keys())
             
             # Parameters
@@ -89,10 +89,21 @@ class course_scheduler:
            # Constraint: Only one room can be assigned to a course at a given time respecting preferences
             def room_assignment_constraint(model, day, hour, course):
                 preferred_rooms = model.discPreferenciasSala[course]  # Get preferred rooms for the course
+
                 if preferred_rooms:  # If there are preferred rooms
+                    for other_course in model.courses:
+                        if other_course != course:
+                            for room in preferred_rooms:
+                                # Check if other_course is scheduled in the preferred room at the same time
+                                if model.room_assignment[day, hour, other_course, room].value == 1:
+                                    # If another course is using the preferred room, assign a temporary room
+                                    return sum(model.room_assignment[day, hour, course, "Temp Room"]) == 1
+                    # If no other course is using the preferred room, allow assignment to the preferred room
                     return sum(model.room_assignment[day, hour, course, room] for room in preferred_rooms) == 1
                 else:  # If there are no preferred rooms, allow assignment to any room
                     return sum(model.room_assignment[day, hour, course, room] for room in model.rooms) == 1
+
+
 
             model.room_assignment_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_assignment_constraint)
 
@@ -105,6 +116,38 @@ class course_scheduler:
                     return model.room_assignment[day, hour, course, room] == model.room_assignment[day, next_hour, course, room]
 
             model.same_room_next_to_each_other_constraint = pyo.Constraint(model.days, model.hours, model.courses, model.rooms, rule=same_room_next_to_each_other_constraint)
+           
+            # Constraint: Remove spaces between subjects by moving them up or down
+            def remove_spaces_constraint(model, day, hour, course):
+                if hour == model.hours.first():
+                    next_hour = model.hours.next(hour)
+                    if next_hour in model.hours:
+                        return model.schedule[day, hour, course] - model.schedule[day, next_hour, course] <= 0
+                    else:
+                        return pyo.Constraint.Skip
+                elif hour == model.hours.last():
+                    prev_hour = model.hours.prev(hour)
+                    if prev_hour in model.hours:
+                        return model.schedule[day, hour, course] - model.schedule[day, prev_hour, course] <= 0
+                    else:
+                        return pyo.Constraint.Skip
+                else:
+                    next_hour = model.hours.next(hour)
+                    prev_hour = model.hours.prev(hour)
+                    if next_hour in model.hours and prev_hour in model.hours:
+                        return model.schedule[day, hour, course] - (model.schedule[day, next_hour, course] + model.schedule[day, prev_hour, course]) <= 0
+                    elif next_hour in model.hours:
+                        return model.schedule[day, hour, course] - (model.schedule[day, next_hour, course] + model.schedule[day, prev_hour, course]) <= 0
+                    elif prev_hour in model.hours:
+                        return model.schedule[day, hour, course] - (model.schedule[day, next_hour, course] + model.schedule[day, prev_hour, course]) <= 0
+                    else:
+                        return pyo.Constraint.Skip
+
+            model.remove_spaces_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=remove_spaces_constraint)
+
+
+
+
 
 
             # Objective
@@ -121,9 +164,11 @@ class course_scheduler:
             solver = pyo.SolverFactory('cbc')
             result = solver.solve(model)
             print(result)
-    
+            
 
     def _create_course_abbreviations(self):
+
+       
         # Abbreviations for MIAA courses
         self.abbreviations_miaa = {
             'Computational Tools for Data Science': 'CTDS',
@@ -178,13 +223,13 @@ class course_scheduler:
                                 if model.room_assignment[day, hour, course, room].value == 1:
                                     assigned_room = room
                                     break
-                            print(" {:^10} ({:^5})|".format(course_abbr,assigned_room), end="")
-
+                            print(" {:^15} ({:^5})|".format(course_abbr, assigned_room), end="")
                             break
                     else:
                         print(" {:^20} |".format("N"), end="")
                 print("\n+" + "-" * 150 + "+")
         print()
+
 
 
 
