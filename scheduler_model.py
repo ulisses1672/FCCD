@@ -5,7 +5,7 @@ import pandas as pd
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
-
+import random
 
 class course_scheduler:
     def __init__(self, days, hours, courses_overall, max_hours_per_day, teachers_Subject, preferencas_dias_professores, salas, discPreferenciasSala):
@@ -83,8 +83,10 @@ class course_scheduler:
             
             model.teacher_availability_constraint = pyo.Constraint(model.courses, model.days, rule=teacher_availability_constraint)
 
-            # Constraint: Only one room can be assigned to a course at a given time
-            # Constraint: Only one room can be assigned to a course at a given time respecting preferences
+
+           # Constraint: Only one room can be assigned to a course at a given time respecting preferences
+
+           # Constraint: Only one room can be assigned to a course at a given time respecting preferences
             def room_assignment_constraint(model, day, hour, course):
                 preferred_rooms = model.discPreferenciasSala[course]  # Get preferred rooms for the course
                 if preferred_rooms:  # If there are preferred rooms
@@ -94,6 +96,15 @@ class course_scheduler:
 
             model.room_assignment_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_assignment_constraint)
 
+            # Constraint: Same room for the same subject if scheduled right next to each other
+            def same_room_next_to_each_other_constraint(model, day, hour, course, room):
+                if hour == model.hours.last():  # If it's the last hour of the day, skip the constraint
+                    return pyo.Constraint.Skip
+                else:
+                    next_hour = model.hours.next(hour)  # Get the next hour
+                    return model.room_assignment[day, hour, course, room] == model.room_assignment[day, next_hour, course, room]
+
+            model.same_room_next_to_each_other_constraint = pyo.Constraint(model.days, model.hours, model.courses, model.rooms, rule=same_room_next_to_each_other_constraint)
 
 
             # Objective
