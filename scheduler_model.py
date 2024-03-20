@@ -29,7 +29,7 @@ class course_scheduler:
     def create_model(self):
 
 
-        for idx,courses in enumerate(self.courses_overall):
+        for idx,courses in enumerate(self.courses_overall.values()):
 
 
             model = pyo.ConcreteModel()

@@ -1,6 +1,6 @@
 from scheduler_model import course_scheduler
 import random
-
+import csv
 
 
 def assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores):
@@ -19,109 +19,90 @@ def assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores):
     return course_teachers
 
 
+def csv_getvalues_courses(csv_file, encoding='utf-8'):
+    courses_overall = {}
+    with open(csv_file, newline='', encoding=encoding) as csvfile:
+        reader = csv.DictReader(csvfile, dialect='excel')
+        for row in reader:
+            course = row['\ufeffcourse']
+            subject = row['subj']
+            quantity = int(row['quantityOfClasses'])
+            if course not in courses_overall:
+                courses_overall[course] = {subject: quantity}
+            else:
+                if subject in courses_overall[course]:
+                    courses_overall[course][subject] += quantity
+                else:
+                    courses_overall[course][subject] = quantity
+    return courses_overall
 
+
+def read_rooms_from_csv(csv_file, encoding='utf-8'):
+    
+    rooms = {}
+    with open(csv_file, newline='', encoding=encoding) as csvfile:
+        reader = csv.DictReader(csvfile, dialect='excel')
+        for row in reader:
+            room = row['\ufeffsala']
+            capacity = int(row['size'])
+            rooms[room] = capacity
+    return rooms
+
+def read_course_room_preferences_from_csv(csv_file, encoding='utf-8'):
+    
+    preferences = {}
+    with open(csv_file, newline='', encoding=encoding) as csvfile:
+        reader = csv.DictReader(csvfile, dialect='excel')
+        for row in reader:
+            course = row['\ufeffsubj']
+            room = row['salas']
+            if course in preferences:
+                preferences[course].append(room)
+            else:
+                preferences[course] = [room]
+    return preferences
+
+def read_teacher_course_preferences_from_csv(csv_file, encoding='utf-8'):
+    
+    preferences = {}
+    with open(csv_file, newline='', encoding=encoding) as csvfile:
+        reader = csv.DictReader(csvfile, dialect='excel')
+        for row in reader:
+            course = row['\ufeffsubj']
+            teacher = row['professores']
+            if course in preferences:
+                preferences[course].append(teacher)
+            else:
+                preferences[course] = [teacher]
+    return preferences
+
+
+
+def read_teacher_availability_from_csv(csv_file, encoding='utf-8'):
+    
+    availability = {}
+    with open(csv_file, newline='', encoding=encoding) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            teacher = row['\ufeffprofessores']
+            day = row['dias']
+            if teacher in availability:
+                availability[teacher].append(day)
+            else:
+                availability[teacher] = [day]
+    return availability
 
 if __name__ == "__main__":
-    #days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-    #hours = [f"Hour_{i}" for i in range(8, 18)]
-    # Adjusting hours to reflect actual time slots for readability
-    #hours = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"]
-    # Define days, hours, and course units for both programs (simplified here)
-    
+  
+
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     hours = [9, 10, 11, 12,13, 14, 15, 16, 17]
-    course_units_miaa = {'CTDS': 3, 'MFAI': 3, 'FAI': 4, 'SMAI': 2, 'MLA': 4}
-    course_units_leec = {'CAL': 4, 'MDAL': 3, 'TCE': 3, 'SD': 3, 'PI': 4}
-    max_hours_per_day = 6
 
-
-    salas = {'salaA': 25,'salaB': 25, 'salaC': 25,'salaD': 25,'salaE': 25,'ginasio': 25,'lab': 25,'salaArtes': 25,'Temp Room':25}
-
-    discPreferenciasSala = {"Computational Tools for Data Science" : ["salaA", "salaB"] , 
-                        'Mathematical Foundations for Artificial Intelligence': ["salaA","salaC", "salaD"],
-                        'Fundamentals of Artificial Intelligence': ["salaA","salaC", "salaD"],
-                        'Statistical Models for AI': ["salaA", "salaC", "salaE"],
-                        'Machine Learning Algorithms': ["salaE"],
-                        'Cálculo': ["salaD", "salaC", "salaD"],
-                        'Matemática Discreta e Álgebra Linear': ["salaA","salaB"],
-                        'Teoria dos Circuitos Elétricos': ["salaC", "salaE"],
-                        'Sistemas Digitais': ["salaC", "salaE"],
-                        'Programação Imperativa': ["salaA", "lab"],
-        }
-
-    teachers_Subject = {"Computational Tools for Data Science" : ["Celia Oliveira", "Natalia Costa", "Carla Ferreira"] , 
-                        'Mathematical Foundations for Artificial Intelligence': ["Celia Oliveira", "Beatriz Rodrigues", "Ana Oliveira"],
-                        'Fundamentals of Artificial Intelligence': ["Clara Pereira", "Matilde Carvalho", "Ana Oliveira"],
-                        'Statistical Models for AI': ["Matilde Silva"],
-                        'Machine Learning Algorithms': ["Celia Oliveira", "Natalia Costa", "Carla Ferreira"],
-                        'Cálculo': ["Silvia Fernandes", "Carla Sousa"],
-                        'Matemática Discreta e Álgebra Linear': ["Carla Martins"],
-                        'Teoria dos Circuitos Elétricos': ["Carla Sousa", "Maria Rodrigues", "Matilde Carvalho"],
-                        'Sistemas Digitais': ["Silvia Fernandes", "Clara Oliveira", "Carla Ferreira"],
-                        'Programação Imperativa': ["Matilde Silva"],
-        }
-    
-
-    preferencas_dias_professores = {
-                        "Celia Oliveira" : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] , 
-                        'Natalia Costa': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] ,  
-                        'Carla Ferreira': ['Wednesday', 'Thursday', 'Friday'] , 
-                        'Beatriz Rodrigues': ['Monday', 'Tuesday'] , 
-                        'Ana Oliveira': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] , 
-                        'Clara Pereira': ['Monday', 'Tuesday', 'Wednesday', 'Thursday'] , 
-                        'Matilde Carvalho': ['Monday', 'Tuesday', 'Wednesday'] ,  
-                        'Carla Sousa': ['Wednesday', 'Thursday', 'Friday'] ,  
-                        'Celia Santos': ['Tuesday', 'Wednesday', 'Thursday', 'Friday'] , 
-                        'Silvia Fernandes': ['Monday', 'Tuesday', 'Thursday', 'Friday'] ,  
-                        'Matilde Silva': ['Monday', 'Tuesday', 'Thursday', 'Friday'] ,  
-                        'Marisa Oliveira':['Wednesday', 'Thursday', 'Friday'] , 
-                        'Bruna Martins': ['Monday', 'Tuesday', 'Wednesday'] , 
-                        'Carla Martins':['Wednesday'] ,  
-                        'Maria Rodrigues': ['Monday', 'Tuesday', 'Wednesday', 'Friday'] , 
-                        'Matilde Carvalho':['Monday', 'Tuesday', 'Friday'] ,  
-                        'Clara Oliveira': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] ,  
-                        'Clara Varzim': [ 'Wednesday', 'Thursday'] , 
-    }
-
-    professoresAvaiability = {
-                        "Celia Oliveira" : 0 , 
-                        'Natalia Costa': 0 ,  
-                        'Carla Ferreira': 0, 
-                        'Beatriz Rodrigues': 0,
-                        'Ana Oliveira': 0,
-                        'Clara Pereira': 0, 
-                        'Matilde Carvalho': 0, 
-                        'Carla Sousa': 0,  
-                        'Celia Santos': 0, 
-                        'Silvia Fernandes': 0,  
-                        'Matilde Silva': 0, 
-                        'Marisa Oliveira':0,
-                        'Bruna Martins': 0,
-                        'Carla Martins':0,
-                        'Maria Rodrigues':0,
-                        'Matilde Carvalho':0,
-                        'Clara Oliveira': 0,
-                        'Clara Varzim': 0,
-    }
-
-
-    course_units_miaa = {
-        'Computational Tools for Data Science': 3,
-        'Mathematical Foundations for Artificial Intelligence': 2,
-        'Fundamentals of Artificial Intelligence': 3,
-        'Statistical Models for AI': 4,
-        'Machine Learning Algorithms': 2,
-    }
-
-    course_units_leec = {
-        'Cálculo': 4,
-        'Matemática Discreta e Álgebra Linear': 2 ,
-        'Teoria dos Circuitos Elétricos': 3,
-        'Sistemas Digitais': 2,
-        'Programação Imperativa': 4,
-    }
-
-    courses_overall = [course_units_miaa,course_units_leec]
+    salas = read_rooms_from_csv("salas.csv")
+    discPreferenciasSala = read_course_room_preferences_from_csv("subjects_preferencias.csv")
+    teachers_Subject = read_teacher_course_preferences_from_csv("subjects_professores.csv")
+    preferencas_dias_professores = read_teacher_availability_from_csv("professores_preferencias.csv")
+    courses_overall = csv_getvalues_courses("courses.csv")
 
     quantity_students = [20,20]
 
