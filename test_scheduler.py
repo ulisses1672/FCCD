@@ -35,7 +35,7 @@ if __name__ == "__main__":
     max_hours_per_day = 6
 
 
-    salas = {'salaA': 0,'salaB': 0, 'salaC': 0,'salaD': 0,'salaE': 0,'ginasio': 0,'lab': 0,'salaArtes': 0,'Temp Room':0}
+    salas = {'salaA': 25,'salaB': 25, 'salaC': 25,'salaD': 25,'salaE': 25,'ginasio': 25,'lab': 25,'salaArtes': 25,'Temp Room':25}
 
     discPreferenciasSala = {"Computational Tools for Data Science" : ["salaA", "salaB"] , 
                         'Mathematical Foundations for Artificial Intelligence': ["salaA","salaC", "salaD"],
@@ -43,7 +43,7 @@ if __name__ == "__main__":
                         'Statistical Models for AI': ["salaA", "salaC", "salaE"],
                         'Machine Learning Algorithms': ["salaE"],
                         'Cálculo': ["salaD", "salaC", "salaD"],
-                        'Matemática Discreta e Álgebra Linear': ["salaB"],
+                        'Matemática Discreta e Álgebra Linear': ["salaA","salaB"],
                         'Teoria dos Circuitos Elétricos': ["salaC", "salaE"],
                         'Sistemas Digitais': ["salaC", "salaE"],
                         'Programação Imperativa': ["salaA", "lab"],
@@ -123,6 +123,10 @@ if __name__ == "__main__":
 
     courses_overall = [course_units_miaa,course_units_leec]
 
+    quantity_students = [20,20]
+
+
+
     max_hours_per_day = 8
 
     teachers_chosen = {}
@@ -135,7 +139,7 @@ if __name__ == "__main__":
         teachers_chosen[course] = teacher
 
     # Assume course_units_miaa, course_units_leec, days, hours, and max_hours_per_day are already defined
-    scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day,teachers_chosen, preferencas_dias_professores,salas,discPreferenciasSala)
+    scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day,teachers_chosen, preferencas_dias_professores,salas,discPreferenciasSala,quantity_students)
 
     #scheduler = course_scheduler(days, hours, course_units_miaa, course_units_leec, max_hours_per_day)
     scheduler.create_model()

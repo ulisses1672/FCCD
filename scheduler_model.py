@@ -8,7 +8,7 @@ from reportlab.lib import colors
 import random
 
 class course_scheduler:
-    def __init__(self, days, hours, courses_overall, max_hours_per_day, teachers_Subject, preferencas_dias_professores, salas, discPreferenciasSala):
+    def __init__(self, days, hours, courses_overall, max_hours_per_day, teachers_Subject, preferencas_dias_professores, salas, discPreferenciasSala , quantity_students):
         self.days = days
         self.hours = hours
         self.courses_overall = courses_overall
@@ -18,11 +18,15 @@ class course_scheduler:
         self.salas = dict(salas)
         self.discPreferenciasSala = dict(discPreferenciasSala)
         self.models = []
-
+        self.quantity_students = quantity_students
     
 
     def create_model(self):
-        for courses in self.courses_overall:
+
+
+        for idx,courses in enumerate(self.courses_overall):
+
+
             model = pyo.ConcreteModel()
             # Sets
             model.days = pyo.Set(initialize=self.days, ordered = True)
@@ -36,6 +40,10 @@ class course_scheduler:
             model.teacher_indices = pyo.Set(initialize=self.teachers_Subject.keys())
             model.teacher = pyo.Param(model.teacher_indices, initialize=self.teachers_Subject, within=pyo.Any)
             model.rooms = pyo.Set(initialize=self.salas.keys())
+
+
+            model.rooms_quantity = pyo.Param(model.rooms, initialize=self.salas, within=pyo.NonNegativeIntegers)
+
             
             # Parameters
             model.hours_per_course = pyo.Param(model.courses, initialize=courses)
@@ -84,24 +92,28 @@ class course_scheduler:
             model.teacher_availability_constraint = pyo.Constraint(model.courses, model.days, rule=teacher_availability_constraint)
 
 
-           # Constraint: Only one room can be assigned to a course at a given time respecting preferences
-
-           # Constraint: Only one room can be assigned to a course at a given time respecting preferences
+            # Constraint: Only one room can be assigned to a course at a given time respecting preferences and room size
             def room_assignment_constraint(model, day, hour, course):
                 preferred_rooms = model.discPreferenciasSala[course]  # Get preferred rooms for the course
-
+                random.shuffle(preferred_rooms)
+                
                 if preferred_rooms:  # If there are preferred rooms
-                    for other_course in model.courses:
-                        if other_course != course:
-                            for room in preferred_rooms:
-                                # Check if other_course is scheduled in the preferred room at the same time
-                                if model.room_assignment[day, hour, other_course, room].value == 1:
-                                    # If another course is using the preferred room, assign a temporary room
-                                    return sum(model.room_assignment[day, hour, course, "Temp Room"]) == 1
-                    # If no other course is using the preferred room, allow assignment to the preferred room
-                    return sum(model.room_assignment[day, hour, course, room] for room in preferred_rooms) == 1
+                    suitable_rooms = []  # List to store rooms with sufficient capacity
+                    for room in preferred_rooms:
+                        if model.rooms_quantity[room] >= self.quantity_students[idx]:  # Assuming quantity_students is defined somewhere
+                            suitable_rooms.append(room)
+
+                    if suitable_rooms:  # If there are suitable rooms
+                        # Assign only suitable rooms
+                        return sum(model.room_assignment[day, hour, course, room] for room in suitable_rooms) == 1
+                    else:
+                        # If no suitable room found among preferred rooms, assign a temporary room
+                        return sum(model.room_assignment[day, hour, course, "Temp Room"]) == 1
+
                 else:  # If there are no preferred rooms, allow assignment to any room
                     return sum(model.room_assignment[day, hour, course, room] for room in model.rooms) == 1
+
+
 
 
 
