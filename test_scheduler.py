@@ -52,13 +52,13 @@ if __name__ == "__main__":
     teachers_Subject = {"Computational Tools for Data Science" : ["Celia Oliveira", "Natalia Costa", "Carla Ferreira"] , 
                         'Mathematical Foundations for Artificial Intelligence': ["Celia Oliveira", "Beatriz Rodrigues", "Ana Oliveira"],
                         'Fundamentals of Artificial Intelligence': ["Clara Pereira", "Matilde Carvalho", "Ana Oliveira"],
-                        'Statistical Models for AI': ["Carla Sousa", "Celia Santos"],
+                        'Statistical Models for AI': ["Matilde Silva"],
                         'Machine Learning Algorithms': ["Celia Oliveira", "Natalia Costa", "Carla Ferreira"],
-                        'Cálculo': ["Silvia Fernandes", "Matilde Silva"],
+                        'Cálculo': ["Silvia Fernandes", "Carla Sousa"],
                         'Matemática Discreta e Álgebra Linear': ["Carla Martins"],
                         'Teoria dos Circuitos Elétricos': ["Carla Sousa", "Maria Rodrigues", "Matilde Carvalho"],
                         'Sistemas Digitais': ["Silvia Fernandes", "Clara Oliveira", "Carla Ferreira"],
-                        'Programação Imperativa': ["Clara Varzim", "Carla Ferreira"],
+                        'Programação Imperativa': ["Matilde Silva"],
         }
     
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
         'Computational Tools for Data Science': 3,
         'Mathematical Foundations for Artificial Intelligence': 2,
         'Fundamentals of Artificial Intelligence': 3,
-        'Statistical Models for AI': 2,
+        'Statistical Models for AI': 4,
         'Machine Learning Algorithms': 2,
     }
 
@@ -145,6 +145,6 @@ if __name__ == "__main__":
     scheduler.create_model()
     result = scheduler.solve()
 
-    scheduler.print_schedule()  # Add this line to print the schedule
-
+    #scheduler.print_schedule()  # Add this line to print the schedule
+    scheduler.print_and_export_schedule()
     

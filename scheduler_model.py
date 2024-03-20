@@ -7,6 +7,11 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 import random
 
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph
+from reportlab.platypus import Spacer
+from reportlab.lib.enums import TA_CENTER
+
 class course_scheduler:
     def __init__(self, days, hours, courses_overall, max_hours_per_day, teachers_Subject, preferencas_dias_professores, salas, discPreferenciasSala , quantity_students):
         self.days = days
@@ -112,9 +117,6 @@ class course_scheduler:
 
                 else:  # If there are no preferred rooms, allow assignment to any room
                     return sum(model.room_assignment[day, hour, course, room] for room in model.rooms) == 1
-
-
-
 
 
             model.room_assignment_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=room_assignment_constraint)
@@ -246,64 +248,60 @@ class course_scheduler:
 
 
     ############################################################################################################
-    """"def print_and_export_schedule(self, filename):
+    def print_and_export_schedule(self):
+        # Create course abbreviations
+        filename = "pdfSchedule.pdf"
         # Create course abbreviations
         self._create_course_abbreviations()
 
-        # Prepare the data for the PDF
-        data = []
-
-        for idx, model in enumerate(self.models):
-            print(f"Schedule for Class {idx+1}:")
-            print("+" + "-" * 150 + "+")
-            print("| {:^25} |".format("Time/Day"), end="")
-            for day in model.days:
-                print(" {:^12} |".format(day), end="")
-            print("\n+" + "-" * 150 + "+")
-
-            # Add the header to the data
-            data.append(["Time/Day"] + model.days)
-
-            for hour in model.hours:
-                print("| {:^25} |".format(hour), end="")
-                row = [hour]
-                for day in model.days:
-                    for course in model.courses:
-                        if model.schedule[day, hour, course].value == 1:
-                            course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
-                            room_assigned = None
-                            for room in model.rooms:
-                                if model.room_assignment[day, hour, course, room].value == 1:
-                                    room_assigned = room
-                                    break
-                            print(" {:^10}({:^10}) |".format(course_abbr, room_assigned), end="")
-                            row.append(f"{course_abbr}({room_assigned})")
-                            break
-                else:
-                    print(" {:^22} |".format("No class"), end="")
-                    row.append("No class")
-                print("\n+" + "-" * 150 + "+")
-
-                # Add the row to the data
-                data.append(row)
-
-            print()
+        # Styles for the PDF
+        styles = getSampleStyleSheet()
+        normal_style = styles['Normal']
+        center_style = styles['Normal']
+        center_style.alignment = TA_CENTER
 
         # Create the PDF
         pdf = SimpleDocTemplate(filename, pagesize=letter)
-        table = Table(data)
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 14),
-
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('GRID', (0,0), (-1,-1), 1, colors.black)
-        ]))
         elems = []
-        elems.append(table)
-        pdf.build(elems)"""""
+
+        for idx, model in enumerate(self.models):
+            # Create a table for each course
+            data = [["Time/Day"] + [day for day in model.days]]
+
+            for hour in model.hours:
+                row = [hour]
+                for day in model.days:
+                    course_info = ""
+                    for course in model.courses:
+                        if model.schedule[day, hour, course].value == 1:
+                            course_abbr = self.abbreviations_miaa.get(course, self.abbreviations_leec.get(course, course))
+                            assigned_room = None
+                            for room in model.rooms:
+                                if model.room_assignment[day, hour, course, room].value == 1:
+                                    assigned_room = room
+                                    break
+                            course_info = f"{course_abbr} ({assigned_room})"
+                            break
+                    row.append(course_info)
+                data.append(row)
+
+            # Create the table
+            title = Paragraph(f"<b>Schedule for Class {idx+1}:</b>", normal_style)
+            table = Table(data)
+            table.setStyle(TableStyle([
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 14),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black)
+            ]))
+
+            # Add the title and table to the PDF elements
+            elems.append(title)
+            elems.append(table)
+            elems.append(Spacer(1, 12))
+
+        # Build elements and add them to the PDF
+        pdf.build(elems)
+
