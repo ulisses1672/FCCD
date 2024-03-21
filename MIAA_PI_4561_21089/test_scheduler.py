@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
     teachers_chosen = {}
 
-    # Assign teachers to courses
+    # Use the new function to assign teachers to courses
     assigned_teachers = assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores)
     print("Assigned Teachers to Courses:")
     for course, teacher in assigned_teachers.items():
