@@ -43,6 +43,7 @@ class course_scheduler:
             model.teacher = pyo.Param(model.teacher_indices, initialize=self.teachers_Subject, within=pyo.Any)
             model.rooms = pyo.Set(initialize=self.salas.keys())
 
+            model.teacher_names = pyo.Set(initialize=self.teachers_Subject.values())
 
             model.rooms_quantity = pyo.Param(model.rooms, initialize=self.salas, within=pyo.NonNegativeIntegers)
 
@@ -61,8 +62,7 @@ class course_scheduler:
             model.schedule = pyo.Var(model.days, model.hours, model.courses , domain=pyo.Binary)
 
             model.room_assignment = pyo.Var(model.days, model.hours, model.courses, model.rooms, domain=pyo.Binary)
-
-
+            model.teacher_assigned = pyo.Var(model.teacher_names,model.days, model.hours, domain=pyo.Binary)
 
             # Constraint: Only one subject can be held in the classroom at the same time
             def single_assignment_constraint(model, day, hour):
@@ -84,14 +84,17 @@ class course_scheduler:
 
 
             # Constraint: Subject scheduled only when teacher is available
-            def teacher_availability_constraint(model, course, day):
-                # Check if teacher for the course is available on the given day
+            # Constraint: Subject scheduled only when teacher is available
+            def teacher_availability_constraint(model, course, day, hour):
+                # Check if teacher for the course is available on the given day and hour
                 teacher = model.teacher[course]
-                if teacher not in model.preferencas_dias_professores or day not in model.preferencas_dias_professores[teacher]:
-                    return sum(model.schedule[day, hour, course] for hour in model.hours) == 0
+                if teacher in model.preferencas_dias_professores and day in model.preferencas_dias_professores[teacher]:
+                    # If the teacher is available, ensure they are not already assigned to another subject at the same time
+                    return model.teacher_assigned[teacher, day, hour] + sum(model.schedule[day, hour, c] for c in model.courses if model.teacher[c] == teacher) <= 1
+                # If teacher is unavailable, skip the constraint
                 return pyo.Constraint.Skip
-            
-            model.teacher_availability_constraint = pyo.Constraint(model.courses, model.days, rule=teacher_availability_constraint)
+
+            model.teacher_availability_constraint = pyo.Constraint(model.courses, model.days, model.hours, rule=teacher_availability_constraint)
 
 
             # Constraint: Only one room can be assigned to a course at a given time respecting preferences and room size
