@@ -126,6 +126,6 @@ if __name__ == "__main__":
     scheduler.create_model()
     result = scheduler.solve()
 
-    #scheduler.print_schedule()  # Add this line to print the schedule
+    scheduler.print_schedule()  # Add this line to print the schedule
     scheduler.print_and_export_schedule()
     

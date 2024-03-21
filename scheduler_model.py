@@ -58,14 +58,14 @@ class course_scheduler:
             model.discPreferenciasSala = self.discPreferenciasSala
             # Max hours per week per course
             model.max_hours_per_week = {course: hours for course, hours in courses.items()}
-            
+            model.teacher_names = pyo.Set(initialize=self.teachers_Subject.values())
+
             model.preferencas_dias_professores = self.preferencas_dias_professores
             # Variables
             model.schedule = pyo.Var(model.days, model.hours, model.courses , domain=pyo.Binary)
 
             model.room_assignment = pyo.Var(model.days, model.hours, model.courses, model.rooms, domain=pyo.Binary)
-
-
+            model.teacher_assigned = pyo.Var(model.teacher_names, model.days, model.hours, domain=pyo.Binary)
 
             # Constraint: Only one subject can be held in the classroom at the same time
             def single_assignment_constraint(model, day, hour):
@@ -87,25 +87,18 @@ class course_scheduler:
 
 
             # Constraint: Subject scheduled only when teacher is available
+            # Constraint: Subject scheduled only when teacher is available
             def teacher_availability_constraint(model, course, day):
                 # Check if teacher for the course is available on the given day
                 teacher = model.teacher[course]
-                if teacher not in model.preferencas_dias_professores or day not in model.preferencas_dias_professores[teacher]:
-                    return sum(model.schedule[day, hour, course] for hour in model.hours) == 0
+                if teacher in model.preferencas_dias_professores and day in model.preferencas_dias_professores[teacher]:
+                    return sum(model.teacher_assigned[teacher, day, hour] for hour in model.hours) == 1
                 return pyo.Constraint.Skip
-            
+
             model.teacher_availability_constraint = pyo.Constraint(model.courses, model.days, rule=teacher_availability_constraint)
 
-            ####Código Novo######
-            # Constraint: A teacher cannot teach two courses at the same time
-            """"def teacher_conflict_constraint(model, day, hour):
-                for teacher in model.teacher_indices:
-                    if sum(model.schedule[day, hour, course] for course in model.courses if model.teacher[course] == teacher) > 1:
-                        return False
-                return True
 
-            model.teacher_conflict_constraint = pyo.Constraint(model.days, model.hours, rule=teacher_conflict_constraint)"""""
-            ##Não Funciona##
+            
 
             # Constraint: Only one room can be assigned to a course at a given time respecting preferences and room size
             def room_assignment_constraint(model, day, hour, course):
@@ -168,10 +161,6 @@ class course_scheduler:
                         return pyo.Constraint.Skip
 
             model.remove_spaces_constraint = pyo.Constraint(model.days, model.hours, model.courses, rule=remove_spaces_constraint)
-
-
-
-
 
 
             # Objective
