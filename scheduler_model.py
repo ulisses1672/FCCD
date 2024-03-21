@@ -41,6 +41,9 @@ class course_scheduler:
             # Parameters
             model.teacher_indices = pyo.Set(initialize=self.teachers_Subject.keys())
             model.teacher = pyo.Param(model.teacher_indices, initialize=self.teachers_Subject, within=pyo.Any)
+
+ # Define set of teachers and their corresponding subjects
+            model.teachers_subject = self.teachers_Subject
             model.rooms = pyo.Set(initialize=self.salas.keys())
 
             model.teacher_names = pyo.Set(initialize=self.teachers_Subject.values())
@@ -63,6 +66,23 @@ class course_scheduler:
 
             model.room_assignment = pyo.Var(model.days, model.hours, model.courses, model.rooms, domain=pyo.Binary)
             model.teacher_assigned = pyo.Var(model.teacher_names,model.days, model.hours, domain=pyo.Binary)
+
+
+            # New constraint: Ensure teachers are not double-booked
+            # Constraint: Only one course can be assigned to a teacher at a given time
+            def teacher_assignment_constraint(model, teacher, day, hour):
+                if teacher in model.teacher:
+                    return sum(model.teacher_assigned[teacher, day, hour] for course in model.courses if model.teacher[course] == teacher) <= 1
+                else:
+                    return pyo.Constraint.Skip
+
+            model.teacher_assignment_constraint = pyo.Constraint(model.teacher_names, model.days, model.hours, rule=teacher_assignment_constraint)
+
+            # Constraint: Only one course can be assigned to a room at a given time
+            def room_assignment_constraint(model, day, hour, room):
+                return sum(model.room_assignment[day, hour, course, room] for course in model.courses) <= 1
+
+            model.room_assignment_constraint = pyo.Constraint(model.days, model.hours, model.rooms, rule=room_assignment_constraint)
 
             # Constraint: Only one subject can be held in the classroom at the same time
             def single_assignment_constraint(model, day, hour):
