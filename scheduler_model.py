@@ -23,14 +23,11 @@ class course_scheduler:
         self.salas = dict(salas)
         self.discPreferenciasSala = dict(discPreferenciasSala)
         self.models = []
-        self.quantity_students = quantity_students
+        self.quantity_students = dict(quantity_students)
     
 
     def create_model(self):
-
-
-        for idx,courses in enumerate(self.courses_overall.values()):
-
+        for courses in self.courses_overall.values():
 
             model = pyo.ConcreteModel()
             # Sets
@@ -105,7 +102,7 @@ class course_scheduler:
                 if preferred_rooms:  # If there are preferred rooms
                     suitable_rooms = []  # List to store rooms with sufficient capacity
                     for room in preferred_rooms:
-                        if model.rooms_quantity[room] >= self.quantity_students[idx]:  # Assuming quantity_students is defined somewhere
+                        if model.rooms_quantity[room] >= self.quantity_students[course]:  # Assuming quantity_students is defined somewhere
                             suitable_rooms.append(room)
 
                     if suitable_rooms:  # If there are suitable rooms

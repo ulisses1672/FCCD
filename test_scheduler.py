@@ -19,7 +19,7 @@ def assign_teachers_to_courses(teachers_Subject, preferencas_dias_professores):
     return course_teachers
 
 
-def csv_getvalues_courses(csv_file, encoding='utf-8'):
+def csv_getvalues_courses(csv_file, quantity_students, encoding='utf-8'):
     courses_overall = {}
     with open(csv_file, newline='', encoding=encoding) as csvfile:
         reader = csv.DictReader(csvfile, dialect='excel')
@@ -27,6 +27,7 @@ def csv_getvalues_courses(csv_file, encoding='utf-8'):
             course = row['\ufeffcourse']
             subject = row['subj']
             quantity = int(row['quantityOfClasses'])
+            students = int(row['quantityOfStudents'])  # Extract quantity of students
             if course not in courses_overall:
                 courses_overall[course] = {subject: quantity}
             else:
@@ -34,7 +35,9 @@ def csv_getvalues_courses(csv_file, encoding='utf-8'):
                     courses_overall[course][subject] += quantity
                 else:
                     courses_overall[course][subject] = quantity
+            quantity_students[subject] = students  # Update quantity of students for the subject
     return courses_overall
+
 
 
 def read_rooms_from_csv(csv_file, encoding='utf-8'):
@@ -102,11 +105,9 @@ if __name__ == "__main__":
     discPreferenciasSala = read_course_room_preferences_from_csv("subjects_preferencias.csv")
     teachers_Subject = read_teacher_course_preferences_from_csv("subjects_professores.csv")
     preferencas_dias_professores = read_teacher_availability_from_csv("professores_preferencias.csv")
-    courses_overall = csv_getvalues_courses("courses.csv")
 
-    quantity_students = [20,20]
-
-
+    quantity_students = {}
+    courses_overall = csv_getvalues_courses("courses.csv",quantity_students)
 
     max_hours_per_day = 8
 
@@ -122,10 +123,9 @@ if __name__ == "__main__":
     # Assume course_units_miaa, course_units_leec, days, hours, and max_hours_per_day are already defined
     scheduler = course_scheduler(days, hours, courses_overall, max_hours_per_day,teachers_chosen, preferencas_dias_professores,salas,discPreferenciasSala,quantity_students)
 
-    #scheduler = course_scheduler(days, hours, course_units_miaa, course_units_leec, max_hours_per_day)
     scheduler.create_model()
     result = scheduler.solve()
 
-    #scheduler.print_schedule()  # Add this line to print the schedule
+    scheduler.print_schedule()
     scheduler.print_and_export_schedule()
     
